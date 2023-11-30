@@ -12,6 +12,7 @@ export const MainView = () => {
             .then((response) => response.json())
             .then((data) => {
                 const moviesFromApi = data.map((movie) => {
+                const moviesFromApi = data.map((movie) => {
                     return {
                         id: movie._id,
                         title: movie.Title,
@@ -50,4 +51,4 @@ export const MainView = () => {
             ))}
         </div>
     );
-};
+})}
