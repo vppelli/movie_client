@@ -8,7 +8,11 @@ export const MainView = () => {
     const [selectedMovie, setSelectedMovie] = useState(null);
 
     useEffect(() => {
-        fetch("https://movie-mikes-7b54f5710543.herokuapp.com/movies")
+        const fetchMyApi = async () => {
+            const data = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/movies");
+            return data
+        }
+        fetchMyApi()
             .then((response) => response.json())
             .then((data) => {
                 const moviesFromApi = data.map((movie) => {

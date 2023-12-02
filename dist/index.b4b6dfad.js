@@ -27187,7 +27187,11 @@ const MainView = ()=>{
     const [movies, setMovies] = (0, _react.useState)([]);
     const [selectedMovie, setSelectedMovie] = (0, _react.useState)(null);
     (0, _react.useEffect)(()=>{
-        fetch("https://movie-mikes-7b54f5710543.herokuapp.com/movies").then((response)=>response.json()).then((data)=>{
+        const fetchMyApi = async ()=>{
+            const data = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/movies");
+            return data;
+        };
+        fetchMyApi().then((response)=>response.json()).then((data)=>{
             const moviesFromApi = data.map((movie)=>{
                 return {
                     id: movie._id,
@@ -27207,14 +27211,14 @@ const MainView = ()=>{
         onBackClick: ()=>setSelectedMovie(null)
     }, void 0, false, {
         fileName: "src/components/main-view.jsx",
-        lineNumber: 32,
+        lineNumber: 36,
         columnNumber: 13
     }, undefined);
     if (movies.length === 0) return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
         children: "The list is empty!"
     }, void 0, false, {
         fileName: "src/components/main-view.jsx",
-        lineNumber: 37,
+        lineNumber: 41,
         columnNumber: 16
     }, undefined);
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("div", {
@@ -27225,12 +27229,12 @@ const MainView = ()=>{
                 }
             }, movie.id, false, {
                 fileName: "src/components/main-view.jsx",
-                lineNumber: 43,
+                lineNumber: 47,
                 columnNumber: 17
             }, undefined))
     }, void 0, false, {
         fileName: "src/components/main-view.jsx",
-        lineNumber: 41,
+        lineNumber: 45,
         columnNumber: 9
     }, undefined);
 };
