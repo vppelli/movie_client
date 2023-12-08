@@ -1,32 +1,33 @@
-import { Col, Row, Button } from "react-bootstrap";
+import { useParams } from "react-router";
+import { Col, Button, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-export const MovieView = ({ movie, onBackClick }) => {
+export const MovieView = ({ movies }) => {
+    const { movieId } = useParams();
+    const movie = movies.find((m) => m.id === movieId);
+
     return (
         <Col>
-            <Col>
-                <img className = "w-100" src = { movie.image } />
-            </Col>
-            <Col>
-                <span>Title: </span>
-                <span>{ movie.title }</span>
-            </Col>
-            <Col>
-                <span>Released: </span>
-                <span>{ movie.released }</span>
-            </Col>
-            <Col>
-                <span>Genre: </span>
-                <span>{ movie.genre }</span>
-            </Col>
-            <Col>
-                <span>Description: </span>
-                <span>{ movie.description }</span>
-            </Col>
-            <Col>
-                <span>Director: </span>
-                <span>{ movie.director }</span>
-            </Col>
-            <Button onClick = { onBackClick }>Back</Button>
+            
+            <Row>
+                <Col>
+                    <img className = "w-100" src = { movie.image } />
+                </Col>
+                <Col>
+                    <h1>{ movie.title }</h1>
+                    <p>Released { movie.released }</p>
+                    <p>Genres { movie.genre }</p>
+                    <h3>Description </h3>
+                    <p>{ movie.description }</p>
+                    <h3>Director </h3>
+                    <p>{ movie.director }</p>
+                </Col>
+            </Row>
+            <Link to = { `/` }>
+                <Button>
+                    Back
+                </Button>
+            </Link>
         </Col>
     );
 };
