@@ -2,7 +2,7 @@ import { Col, Row, Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 
-export const ProfileView = ({ user, token, movies }) => {
+export const ProfileView = ({ user, token, movies, addFav, removeFav }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -34,7 +34,7 @@ export const ProfileView = ({ user, token, movies }) => {
                 alert("Updated Informatio");
                 window.location.reload();
             } else {
-                alert("Update failed");
+                alert("Update failed Username, Password, and Email required");
             }
         })
         .catch(error => {
@@ -42,8 +42,23 @@ export const ProfileView = ({ user, token, movies }) => {
         });
     };
 
+    const deleteUser = () => {
+        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } })
+        .then((response) => {
+            if (response.ok) {
+                window.location.reload();
+                alert("Account has been Deleted");
+            } else {
+                alert("Failed to Delete Account")
+            }
+        })
+        .catch(error => {
+            console.error("Failed: ", error);
+        })
+    };
+
     // Get Favorite Movie list
-    let favoriteMovies = movies.filter(m => user.FavoriteMovies.includes(m._id))
+    const favoriteMovies = movies.filter(m => user.FavoriteMovies.includes(m.id))
     
     return (
         <Col>
@@ -53,7 +68,7 @@ export const ProfileView = ({ user, token, movies }) => {
             <Row>
                 {/* Form for to UpdateUser Information */}
                 <Col>
-                    <h3>Update User Info ( Currently Not working )</h3>
+                    <h3>Update User Info</h3>
                     <Form onSubmit = { handleUpdate }>
                     <Form.Group controlId = "formUsername">
                     <Form.Label>Username:</Form.Label>
@@ -62,6 +77,7 @@ export const ProfileView = ({ user, token, movies }) => {
                         value = { username }
                         onChange = {(e) => setUsername(e.target.value)}
                         minLength = "4" 
+                        required
                     />
                     </Form.Group>
                     <Form.Group controlId = "formPassword">
@@ -79,6 +95,7 @@ export const ProfileView = ({ user, token, movies }) => {
                         type = "email"
                         value = { email }
                         onChange = {(e) => setEmail(e.target.value)}
+                        required
                     />
                     </Form.Group>
                     <Form.Group controlId = "formBirthday">
@@ -96,22 +113,24 @@ export const ProfileView = ({ user, token, movies }) => {
                 </Col>
                 {/* Delete Account */}
                 <Col>
-                    <Button className = "btn-danger">
+                    <Button className = "btn-danger" onClick = { deleteUser }>
                         Delete Account
                     </Button>
                 </Col>
                 {/* Favorite Movie List */}
                 <h2>Favorite Movies</h2>
-                <Col>
-                    {/* { favoriteMovies.map((movie) => {
+                <Row>
+                    { favoriteMovies.length === 0 ? (
+                        <Col>No Favortie Movies Added!</Col>
+                    ) :
+                    favoriteMovies.map((movie) => {
                         return (
-                            <Col key = { movie.id }>
-                                <MovieCard movie = { movie }/>
+                            <Col key = { movie.id } md = {2}>
+                                <MovieCard movie = { movie } addFav = { addFav } removeFav = { removeFav } user = { user }/>
                             </Col>
                         )
-                    })} */}
-                    No Favortie Movies Added!
-                </Col>
+                    })}
+                </Row>
             </Row>
         </Col>
     )

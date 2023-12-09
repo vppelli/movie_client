@@ -47,6 +47,34 @@ export const MainView = () => {
             });
     }, [token]);
 
+    const addFavorite = (movieId) => {
+        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movieId}`, { method: "POST", headers: { Authorization: `Bearer ${token}` } })
+        .then((response) => {
+            if (response.ok) {
+                alert("Movie added to Favorites");
+            } else {
+                alert("Failed to add");
+            }
+        })
+        .catch(error => {
+            console.error('Failed: ', error);
+        });
+    };
+
+    const removeFavorite = (movieId) => {
+        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movieId}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } })
+        .then((response) => {
+            if (response.ok) {
+                alert("Movie removed from Favorites");
+            } else {
+                alert("Failed to add");
+            }
+        })
+        .catch(error => {
+            console.error('Failed: ', error);
+        });
+    };
+
     return (
         <BrowserRouter>
             <NavigationBar
@@ -65,7 +93,7 @@ export const MainView = () => {
                     element = {
                         <>
                             {user? (
-                                <Navigate to = "/" />
+                                <Navigate to = "/login" />
                             ) : (
                                 <Col md = {5}>
                                     <SignupView />
@@ -80,7 +108,7 @@ export const MainView = () => {
                         element = {
                             <>
                                 {user ? (
-                                    <Navigate to = "/" />
+                                    <Navigate to = "/movies" />
                                 ) : (
                                     <Col md = {5}>
                                         <LoginView 
@@ -105,7 +133,7 @@ export const MainView = () => {
                                     <Col>There is no movie</Col>
                                 ) : (
                                     <Col md = {12}>
-                                        <MovieView movies = { movies }/>
+                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } user = { user }/>
                                     </Col>
                                 )}
                             </>
@@ -113,7 +141,7 @@ export const MainView = () => {
                     />
                     {/* Return MovieCards if logged in */}
                     <Route 
-                    path = "/"
+                    path = "/movies"
                     element = {
                         <>
                             {!user ? (
@@ -124,7 +152,7 @@ export const MainView = () => {
                                     <>
                                         { movies.map((movie) => (
                                             <Col md = {6} lg = {4} xl = {3} className = "mb-5 col-8" key = { movie.id }>
-                                                <MovieCard movie = { movie }/>
+                                                <MovieCard movie = { movie } addFav = { addFavorite } removeFav = { removeFavorite } user = { user }/>
                                             </Col>
                                         ))}
                                     </>
@@ -145,6 +173,8 @@ export const MainView = () => {
                                     user = { user }
                                     movies = { movies }
                                     token = { token }
+                                    addFav = { addFavorite }
+                                    removeFav = { removeFavorite }
                                     />
                                 </Col>
                             )}

@@ -1,8 +1,9 @@
 import { useParams } from "react-router";
 import { Col, Button, Row } from "react-bootstrap";
+import { BookmarkPlus, BookmarkCheckFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 
-export const MovieView = ({ movies }) => {
+export const MovieView = ({ user, movies, addFav, removeFav }) => {
     const { movieId } = useParams();
     const movie = movies.find((m) => m.id === movieId);
 
@@ -21,9 +22,16 @@ export const MovieView = ({ movies }) => {
                     <p>{ movie.description }</p>
                     <h3>Director </h3>
                     <p>{ movie.director }</p>
+                    <div>
+                        {user.FavoriteMovies.includes(movie.id) ? (
+                            <BookmarkCheckFill size = {40} color = "orange" className = "fav-button mt-2 me-2 top-0 end-0" onClick = {() => removeFav(movie.id)}/>
+                        ) : (
+                            <BookmarkPlus size = {40} color = "orange" className = "fav-button mt-2 me-2 top-0 end-0" onClick = {() => addFav(movie.id)}/>
+                        )}
+                    </div>
                 </Col>
             </Row>
-            <Link to = { `/` }>
+            <Link to = { `/movies` }>
                 <Button>
                     Back
                 </Button>
