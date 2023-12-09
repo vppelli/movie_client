@@ -2,6 +2,7 @@ import { useParams } from "react-router";
 import { Col, Button, Row, Card } from "react-bootstrap";
 import { BookmarkPlus, BookmarkCheckFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
+import { MovieCard } from "../movie-card/movie-card";
 
 export const MovieView = ({ user, movies, addFav, removeFav }) => {
     const { movieId } = useParams();
@@ -48,6 +49,20 @@ export const MovieView = ({ user, movies, addFav, removeFav }) => {
                     </Link>
                 </Col>
             </Row>
+            <Col className = "mt-3 bg-light rounded-2 m-auto p-2">
+                    <Row>
+                        {/* { similarMovies.length === 0 ? ( */}
+                            <Col>No Similar Movies! (similar movies does not work)</Col>
+                        {/* ) :
+                        similarMovies.map((movie) => {
+                            return (
+                                <Col key = { movie.id } md = {2}>
+                                    <MovieCard movie = { movies } addFav = { addFav } removeFav = { removeFav } user = { user }/>
+                                </Col>
+                            )
+                        })} */}
+                    </Row>
+                </Col>
         </Col>
     );
 };
