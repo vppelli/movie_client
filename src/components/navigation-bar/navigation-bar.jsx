@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export const NavigationBar = ({ user, onLoggedOut }) => {
     return (
-        <Navbar bg = "light" expand = "lg">
+        <Navbar bg = "light" expand = "lg" className = "rounded-2">
             <Container>
                 <Navbar.Brand as = { Link } to = "/">
                     Movie App

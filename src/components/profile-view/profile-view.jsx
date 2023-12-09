@@ -62,23 +62,50 @@ export const ProfileView = ({ user, token, movies, addFav, removeFav }) => {
     
     return (
         <Col>
-            <Col>
-                <h1>Welcome { user.Username }</h1>
-            </Col>
             <Row>
+                {/* Favorite Movie List / Welcome */}
+                <Row className = "mt-3 bg-light rounded-2 m-auto p-2">
+                    <Col className = "col-8">
+                        <h3>Welcome <span className="text-primary">{ user.Username }</span></h3>
+                    </Col>
+                    <Col>
+                        <Button className = "btn-danger offset-8" onClick = { deleteUser }>
+                            Delete Account
+                        </Button>
+                    </Col>
+                </Row>
+                <Col className = "mt-3 bg-light rounded-2 m-auto p-2">
+                    <Row>
+                        <Col className = "col-8">
+                            <h3>Favorite Movies</h3>
+                        </Col>
+                    </Row>
+                    <Row>
+                        { favoriteMovies.length === 0 ? (
+                            <Col>No Favortie Movies Added!</Col>
+                        ) :
+                        favoriteMovies.map((movie) => {
+                            return (
+                                <Col key = { movie.id } md = {2}>
+                                    <MovieCard movie = { movie } addFav = { addFav } removeFav = { removeFav } user = { user }/>
+                                </Col>
+                            )
+                        })}
+                    </Row>
+                </Col>
                 {/* Form for to UpdateUser Information */}
-                <Col>
+                <Row className = "mt-3 m-auto bg-light rounded-2 p-2">
                     <h3>Update User Info</h3>
                     <Form onSubmit = { handleUpdate }>
                     <Form.Group controlId = "formUsername">
-                    <Form.Label>Username:</Form.Label>
-                    <Form.Control
-                        type = "text"
-                        value = { username }
-                        onChange = {(e) => setUsername(e.target.value)}
-                        minLength = "4" 
-                        required
-                    />
+                        <Form.Label>Username:</Form.Label>
+                        <Form.Control
+                            type = "text"
+                            value = { username }
+                            onChange = {(e) => setUsername(e.target.value)}
+                            minLength = "4" 
+                            required
+                        />
                     </Form.Group>
                     <Form.Group controlId = "formPassword">
                         <Form.Label>Password:</Form.Label>
@@ -87,7 +114,7 @@ export const ProfileView = ({ user, token, movies, addFav, removeFav }) => {
                         value = { password }
                         onChange = {(e) => setPassword(e.target.value)}
                         required
-                    />
+                        />
                     </Form.Group>
                     <Form.Group controlId = "formEmail">
                         <Form.Label>Email:</Form.Label>
@@ -96,40 +123,20 @@ export const ProfileView = ({ user, token, movies, addFav, removeFav }) => {
                         value = { email }
                         onChange = {(e) => setEmail(e.target.value)}
                         required
-                    />
+                        />
                     </Form.Group>
                     <Form.Group controlId = "formBirthday">
-                    <Form.Label>Password:</Form.Label>
+                    <Form.Label>Birthday:</Form.Label>
                     <Form.Control
                         type = "date"
                         value = { birthday }
                         onChange = {(e) => setBirthday(e.target.value)}
-                    />
+                        />
                     </Form.Group>
-                    <Button variant = "primary" type = "submit">
+                    <Button className = "mt-2" variant = "primary" type = "submit">
                         Update
                     </Button>
                     </Form>
-                </Col>
-                {/* Delete Account */}
-                <Col>
-                    <Button className = "btn-danger" onClick = { deleteUser }>
-                        Delete Account
-                    </Button>
-                </Col>
-                {/* Favorite Movie List */}
-                <h2>Favorite Movies</h2>
-                <Row>
-                    { favoriteMovies.length === 0 ? (
-                        <Col>No Favortie Movies Added!</Col>
-                    ) :
-                    favoriteMovies.map((movie) => {
-                        return (
-                            <Col key = { movie.id } md = {2}>
-                                <MovieCard movie = { movie } addFav = { addFav } removeFav = { removeFav } user = { user }/>
-                            </Col>
-                        )
-                    })}
                 </Row>
             </Row>
         </Col>
