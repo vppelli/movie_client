@@ -4,7 +4,7 @@ import { BookmarkPlus, BookmarkCheckFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
 
-export const MovieView = ({ user, movies, addFav, removeFav }) => {
+export const MovieView = ({ user, movies, addFav, removeFav, genres }) => {
     const { movieId } = useParams();
     const movie = movies.find((m) => m.id === movieId);
 

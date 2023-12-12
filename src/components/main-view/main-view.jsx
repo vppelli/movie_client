@@ -4,6 +4,8 @@ import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
 import { ProfileView } from "../profile-view/profile-view";
+import { GenreCard } from "../genre-card/genre-card";
+import { DirectorCard } from "../director-card/director-card";
 import { Row, Col } from "react-bootstrap";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
@@ -14,6 +16,8 @@ export const MainView = () => {
     const [movies, setMovies] = useState([]);
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
+    const [genres, setGenres] = useState([]);
+    const [directors, setDirectors] = useState([]);
 
     useEffect(() => {
 
@@ -41,6 +45,64 @@ export const MainView = () => {
                 });
 
                 setMovies(moviesFromApi);
+            })
+            .catch(error => {
+                console.error('Error: ', error);
+            });
+    }, [token]);
+
+    useEffect(() => {
+
+        if (!token) {
+            return;
+        }
+
+        const fetchGenres = async () => {
+            const data = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/genres", { headers: { Authorization: `Bearer ${token}` } });
+            return data
+        }
+        fetchGenres()
+            .then((response) => response.json())
+            .then((data) => {
+                const genresFromApi = data.map((genre) => {
+                    return {
+                        id: genre._id,
+                        name: genre.Name,
+                        about: genre.About
+                    };
+                });
+
+                setGenres(genresFromApi);
+            })
+            .catch(error => {
+                console.error('Error: ', error);
+            });
+    }, [token]);
+
+    useEffect(() => {
+
+        if (!token) {
+            return;
+        }
+
+        const fetchDirectors = async () => {
+            const data = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/directors", { headers: { Authorization: `Bearer ${token}` } });
+            return data
+        }
+        fetchDirectors()
+            .then((response) => response.json())
+            .then((data) => {
+                const directorsFromApi = data.map((director) => {
+                    return {
+                        id: director._id,
+                        name: director.Name,
+                        bio: director.Bio,
+                        born: director.Born,
+                        dead: director.Dead
+                    };
+                });
+
+                setDirectors(directorsFromApi);
             })
             .catch(error => {
                 console.error('Error: ', error);
@@ -133,7 +195,7 @@ export const MainView = () => {
                                     <Col>There is no movie</Col>
                                 ) : (
                                     <Col md = {12}>
-                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } user = { user }/>
+                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } user = { user } genres = { genres }/>
                                     </Col>
                                 )}
                             </>
@@ -157,6 +219,48 @@ export const MainView = () => {
                                         ))}
                                     </>
                                 )}
+                        </>
+                    }
+                    />
+                    {/* Return GenreView if logged in */}
+                    <Route
+                    path = "/genres"
+                    element = {
+                        <>
+                            {!user ? (
+                                <Navigate to = "/login" replace />
+                            ) : (
+                                <>
+                                    {  genres.map((genre) => (
+                                        <Row key = { genre.id } className = "mb-2">
+                                            <GenreCard 
+                                            genre = { genre }
+                                            />
+                                        </Row>
+                                    ))}
+                                </>
+                            )}
+                        </>
+                    }
+                    />
+                    {/* Return DirectorView if logged in */}
+                    <Route
+                    path = "/directors"
+                    element = {
+                        <>
+                            {!user ? (
+                                <Navigate to = "/login" replace />
+                            ) : (
+                                <>
+                                    { directors.map((director) => (
+                                        <Col md = {4} key = { director.id } className = "mb-2">
+                                            <DirectorCard 
+                                            director = { director }
+                                            />
+                                        </Col>
+                                    ))}
+                                </>
+                            )}
                         </>
                     }
                     />
