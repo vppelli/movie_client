@@ -14,8 +14,8 @@ export const MainView = () => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const storedToken = localStorage.getItem("token");
     const [movies, setMovies] = useState([]);
-    const [user, setUser] = useState(null);
-    const [token, setToken] = useState(null);
+    const [user, setUser] = useState(storedUser ? storedUser : null);
+    const [token, setToken] = useState(storedToken ? storedToken : null);
     const [genres, setGenres] = useState([]);
     const [directors, setDirectors] = useState([]);
 
@@ -47,7 +47,7 @@ export const MainView = () => {
                 setMovies(moviesFromApi);
             })
             .catch(error => {
-                console.error('Error: ', error);
+                console.error("Error: ", error);
             });
     }, [token]);
 
@@ -75,7 +75,7 @@ export const MainView = () => {
                 setGenres(genresFromApi);
             })
             .catch(error => {
-                console.error('Error: ', error);
+                console.error("Error: ", error);
             });
     }, [token]);
 
@@ -105,7 +105,7 @@ export const MainView = () => {
                 setDirectors(directorsFromApi);
             })
             .catch(error => {
-                console.error('Error: ', error);
+                console.error("Error: ", error);
             });
     }, [token]);
 
@@ -118,8 +118,15 @@ export const MainView = () => {
                 alert("Failed to add");
             }
         })
+        .then((user) => {
+            if (user) {
+                localStorage.setItem("user", JSON.stringify(user));
+                setUser(user);
+                window.location.reload();
+            }
+        })
         .catch(error => {
-            console.error('Failed: ', error);
+            console.error("Failed: ", error);
         });
     };
 
@@ -132,8 +139,15 @@ export const MainView = () => {
                 alert("Failed to add");
             }
         })
+        .then((user) => {
+            if (user) {
+                localStorage.setItem("user", JSON.stringify(user));
+                setUser(user);
+                window.location.reload();
+            }
+        })
         .catch(error => {
-            console.error('Failed: ', error);
+            console.error("Failed: ", error);
         });
     };
 
@@ -195,7 +209,7 @@ export const MainView = () => {
                                     <Col>There is no movie</Col>
                                 ) : (
                                     <Col md = {12}>
-                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } user = { user } genres = { genres }/>
+                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } user = { user } genres = { genres } directors = { directors } />
                                     </Col>
                                 )}
                             </>
@@ -279,6 +293,7 @@ export const MainView = () => {
                                     token = { token }
                                     addFav = { addFavorite }
                                     removeFav = { removeFavorite }
+                                    setUser = { setUser }
                                     />
                                 </Col>
                             )}

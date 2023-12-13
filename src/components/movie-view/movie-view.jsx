@@ -4,9 +4,12 @@ import { BookmarkPlus, BookmarkCheckFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
 
-export const MovieView = ({ user, movies, addFav, removeFav, genres }) => {
+export const MovieView = ({ user, movies, addFav, removeFav, genres, directors }) => {
     const { movieId } = useParams();
     const movie = movies.find((m) => m.id === movieId);
+
+    const genre = genres.filter(g => g.id == movie.genre);
+    const director = directors.filter(d => d.id == movie.director);
 
     return (
         <Col>
@@ -25,13 +28,14 @@ export const MovieView = ({ user, movies, addFav, removeFav, genres }) => {
                     <Col md = {8}>
                         <Card.Body>
                             <Card.Text>
-                                <h1>{ movie.title }</h1>
-                                <p>Released { movie.released }</p>
-                                <p>Genres { movie.genre }</p>
-                                <h3>Description </h3>
-                                <p>{ movie.description }</p>
-                                <h3>Director </h3>
-                                <p>{ movie.director }</p>
+                                <span className="fs-1">{ movie.title }</span>
+                            </Card.Text>
+                            <Card.Text>
+                                Released { movie.released } <br></br> Genres { genre.name }
+                            </Card.Text>
+                            <Card.Text>
+                                    <span className="fs-2">Description</span> <br></br> { movie.description } <br></br>
+                                    <span className="fs-2">Director</span> <br></br> { director.name }
                             </Card.Text>
                         </Card.Body>
                     </Col>

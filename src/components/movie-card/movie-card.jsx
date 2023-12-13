@@ -6,7 +6,7 @@ import { BookmarkPlus, BookmarkCheckFill } from "react-bootstrap-icons";
 export const MovieCard = ({ movie, user, removeFav, addFav }) => {
 
     return (
-        <Link to = {`/movies/${encodeURIComponent(movie.id)}`}>
+        <Link to = {`/movies/${encodeURIComponent(movie.id)}`} className = "text-decoration-none">
             <Card className = "h-100">
                 <Card.Img variant = "top" src = { movie.image } />
                 <Card.ImgOverlay>
