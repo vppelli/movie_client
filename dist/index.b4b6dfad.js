@@ -27203,79 +27203,66 @@ const MainView = ()=>{
     const [directors, setDirectors] = (0, _react.useState)([]);
     (0, _react.useEffect)(()=>{
         if (!token) return;
-        const fetchMyApi = async ()=>{
-            const data = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/movies", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-            return data;
-        };
-        fetchMyApi().then((response)=>response.json()).then((data)=>{
-            const moviesFromApi = data.map((movie)=>{
-                return {
-                    id: movie._id,
-                    title: movie.Title,
-                    released: movie.Released,
-                    genre: movie.Genre,
-                    director: movie.Director,
-                    image: movie.ImagePath,
-                    description: movie.Description
-                };
-            });
-            setMovies(moviesFromApi);
-        }).catch((error)=>{
-            console.error("Error: ", error);
-        });
-    }, [
-        token
-    ]);
-    (0, _react.useEffect)(()=>{
-        if (!token) return;
         const fetchGenres = async ()=>{
-            const data = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/genres", {
+            const response = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/genres", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            return data;
-        };
-        fetchGenres().then((response)=>response.json()).then((data)=>{
-            const genresFromApi = data.map((genre)=>{
-                return {
+            const data = await response.json();
+            return data.map((genre)=>({
                     id: genre._id,
                     name: genre.Name,
                     about: genre.About
-                };
-            });
-            setGenres(genresFromApi);
-        }).catch((error)=>{
-            console.error("Error: ", error);
-        });
-    }, [
-        token
-    ]);
-    (0, _react.useEffect)(()=>{
-        if (!token) return;
+                }));
+        };
         const fetchDirectors = async ()=>{
-            const data = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/directors", {
+            const response = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/directors", {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             });
-            return data;
-        };
-        fetchDirectors().then((response)=>response.json()).then((data)=>{
-            const directorsFromApi = data.map((director)=>{
-                return {
+            const data = await response.json();
+            return data.map((director)=>({
                     id: director._id,
                     name: director.Name,
                     bio: director.Bio,
                     born: director.Born,
                     dead: director.Dead
+                }));
+        };
+        Promise.all([
+            fetchGenres(),
+            fetchDirectors()
+        ]).then(([genresFromApi, directorsFromApi])=>{
+            setGenres(genresFromApi);
+            setDirectors(directorsFromApi);
+            return fetch("https://movie-mikes-7b54f5710543.herokuapp.com/movies", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+        }).then((response)=>response.json()).then((data)=>{
+            const moviesFromApi = data.map((movie)=>{
+                movie.genre = movie.Genre.map((genreId)=>{
+                    const genreObj = genres.find((genre)=>genre.id === genreId);
+                    return genreObj ? genreObj.name : genreId;
+                });
+                movie.director = movie.Director.map((directorId)=>{
+                    const directorObj = directors.find((director)=>director.id === directorId);
+                    return directorObj ? directorObj.name : directorId;
+                });
+                return {
+                    id: movie._id,
+                    title: movie.Title,
+                    released: movie.Released,
+                    genre: movie.genre,
+                    director: movie.director,
+                    image: movie.ImagePath,
+                    description: movie.Description
                 };
             });
-            setDirectors(directorsFromApi);
+            setMovies(moviesFromApi);
         }).catch((error)=>{
             console.error("Error: ", error);
         });
@@ -27331,7 +27318,7 @@ const MainView = ()=>{
                 }
             }, void 0, false, {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 156,
+                lineNumber: 129,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Row), {
@@ -27350,7 +27337,7 @@ const MainView = ()=>{
                             }, void 0, false)
                         }, void 0, false, {
                             fileName: "src/components/main-view/main-view.jsx",
-                            lineNumber: 167,
+                            lineNumber: 140,
                             columnNumber: 21
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
@@ -27370,7 +27357,7 @@ const MainView = ()=>{
                             }, void 0, false)
                         }, void 0, false, {
                             fileName: "src/components/main-view/main-view.jsx",
-                            lineNumber: 182,
+                            lineNumber: 155,
                             columnNumber: 21
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
@@ -27387,15 +27374,13 @@ const MainView = ()=>{
                                         movies: movies,
                                         addFav: addFavorite,
                                         removeFav: removeFavorite,
-                                        user: user,
-                                        genres: genres,
-                                        directors: directors
+                                        user: user
                                     }, void 0, false, void 0, void 0)
                                 }, void 0, false, void 0, void 0)
                             }, void 0, false)
                         }, void 0, false, {
                             fileName: "src/components/main-view/main-view.jsx",
-                            lineNumber: 202,
+                            lineNumber: 175,
                             columnNumber: 21
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
@@ -27423,7 +27408,7 @@ const MainView = ()=>{
                             }, void 0, false)
                         }, void 0, false, {
                             fileName: "src/components/main-view/main-view.jsx",
-                            lineNumber: 219,
+                            lineNumber: 192,
                             columnNumber: 21
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
@@ -27443,7 +27428,7 @@ const MainView = ()=>{
                             }, void 0, false)
                         }, void 0, false, {
                             fileName: "src/components/main-view/main-view.jsx",
-                            lineNumber: 240,
+                            lineNumber: 213,
                             columnNumber: 21
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
@@ -27464,7 +27449,7 @@ const MainView = ()=>{
                             }, void 0, false)
                         }, void 0, false, {
                             fileName: "src/components/main-view/main-view.jsx",
-                            lineNumber: 261,
+                            lineNumber: 234,
                             columnNumber: 21
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
@@ -27486,28 +27471,28 @@ const MainView = ()=>{
                             }, void 0, false)
                         }, void 0, false, {
                             fileName: "src/components/main-view/main-view.jsx",
-                            lineNumber: 282,
+                            lineNumber: 255,
                             columnNumber: 21
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/main-view/main-view.jsx",
-                    lineNumber: 165,
+                    lineNumber: 138,
                     columnNumber: 17
                 }, undefined)
             }, void 0, false, {
                 fileName: "src/components/main-view/main-view.jsx",
-                lineNumber: 164,
+                lineNumber: 137,
                 columnNumber: 13
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/main-view/main-view.jsx",
-        lineNumber: 155,
+        lineNumber: 128,
         columnNumber: 9
     }, undefined);
 };
-_s(MainView, "J+ICMhvYCnzOjDhFfNwnrY4rn1g=");
+_s(MainView, "HzjO09BlBj8WQgr1b608QGXqEk8=");
 _c = MainView;
 var _c;
 $RefreshReg$(_c, "MainView");
@@ -47530,13 +47515,19 @@ var _reactBootstrap = require("react-bootstrap");
 var _reactBootstrapIcons = require("react-bootstrap-icons");
 var _reactRouterDom = require("react-router-dom");
 var _movieCard = require("../movie-card/movie-card");
+var _genreCard = require("../genre-card/genre-card");
 var _s = $RefreshSig$();
-const MovieView = ({ user, movies, addFav, removeFav, genres, directors })=>{
+const MovieView = ({ user, movies, addFav, removeFav })=>{
     _s();
     const { movieId } = (0, _reactRouter.useParams)();
     const movie = movies.find((m)=>m.id === movieId);
-    const genre = genres.filter((g)=>g.id == movie.genre);
-    const director = directors.filter((d)=>d.id == movie.director);
+    const getGenre = movie.genre;
+    const setGenre = getGenre.join(", ");
+    const getDirector = movie.director;
+    const setDirector = getDirector.join(", ");
+    const similarMovies = movies.filter((m)=>{
+        return m.genre === movie.genre;
+    });
     return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Col), {
         children: [
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card), {
@@ -47550,12 +47541,12 @@ const MovieView = ({ user, movies, addFav, removeFav, genres, directors })=>{
                                 className: "img-fluid rounded-start"
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
-                                lineNumber: 19,
+                                lineNumber: 26,
                                 columnNumber: 25
                             }, undefined)
                         }, void 0, false, {
                             fileName: "src/components/movie-view/movie-view.jsx",
-                            lineNumber: 18,
+                            lineNumber: 25,
                             columnNumber: 21
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card).ImgOverlay, {
@@ -47566,7 +47557,7 @@ const MovieView = ({ user, movies, addFav, removeFav, genres, directors })=>{
                                 onClick: ()=>removeFav(movie.id)
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
-                                lineNumber: 23,
+                                lineNumber: 30,
                                 columnNumber: 29
                             }, undefined) : /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrapIcons.BookmarkPlus), {
                                 size: 40,
@@ -47575,12 +47566,12 @@ const MovieView = ({ user, movies, addFav, removeFav, genres, directors })=>{
                                 onClick: ()=>addFav(movie.id)
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
-                                lineNumber: 25,
+                                lineNumber: 32,
                                 columnNumber: 29
                             }, undefined)
                         }, void 0, false, {
                             fileName: "src/components/movie-view/movie-view.jsx",
-                            lineNumber: 21,
+                            lineNumber: 28,
                             columnNumber: 21
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Col), {
@@ -47593,12 +47584,12 @@ const MovieView = ({ user, movies, addFav, removeFav, genres, directors })=>{
                                             children: movie.title
                                         }, void 0, false, {
                                             fileName: "src/components/movie-view/movie-view.jsx",
-                                            lineNumber: 31,
+                                            lineNumber: 38,
                                             columnNumber: 33
                                         }, undefined)
                                     }, void 0, false, {
                                         fileName: "src/components/movie-view/movie-view.jsx",
-                                        lineNumber: 30,
+                                        lineNumber: 37,
                                         columnNumber: 29
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card).Text, {
@@ -47608,15 +47599,16 @@ const MovieView = ({ user, movies, addFav, removeFav, genres, directors })=>{
                                             " ",
                                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("br", {}, void 0, false, {
                                                 fileName: "src/components/movie-view/movie-view.jsx",
-                                                lineNumber: 34,
+                                                lineNumber: 41,
                                                 columnNumber: 61
                                             }, undefined),
-                                            " Genres ",
-                                            genre.name
+                                            " Genres ( ",
+                                            setGenre,
+                                            " )"
                                         ]
                                     }, void 0, true, {
                                         fileName: "src/components/movie-view/movie-view.jsx",
-                                        lineNumber: 33,
+                                        lineNumber: 40,
                                         columnNumber: 29
                                     }, undefined),
                                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card).Text, {
@@ -47626,13 +47618,13 @@ const MovieView = ({ user, movies, addFav, removeFav, genres, directors })=>{
                                                 children: "Description"
                                             }, void 0, false, {
                                                 fileName: "src/components/movie-view/movie-view.jsx",
-                                                lineNumber: 37,
+                                                lineNumber: 44,
                                                 columnNumber: 37
                                             }, undefined),
                                             " ",
                                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("br", {}, void 0, false, {
                                                 fileName: "src/components/movie-view/movie-view.jsx",
-                                                lineNumber: 37,
+                                                lineNumber: 44,
                                                 columnNumber: 79
                                             }, undefined),
                                             " ",
@@ -47640,7 +47632,7 @@ const MovieView = ({ user, movies, addFav, removeFav, genres, directors })=>{
                                             " ",
                                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("br", {}, void 0, false, {
                                                 fileName: "src/components/movie-view/movie-view.jsx",
-                                                lineNumber: 37,
+                                                lineNumber: 44,
                                                 columnNumber: 111
                                             }, undefined),
                                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
@@ -47648,43 +47640,43 @@ const MovieView = ({ user, movies, addFav, removeFav, genres, directors })=>{
                                                 children: "Director"
                                             }, void 0, false, {
                                                 fileName: "src/components/movie-view/movie-view.jsx",
-                                                lineNumber: 38,
+                                                lineNumber: 45,
                                                 columnNumber: 37
                                             }, undefined),
                                             " ",
                                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("br", {}, void 0, false, {
                                                 fileName: "src/components/movie-view/movie-view.jsx",
-                                                lineNumber: 38,
+                                                lineNumber: 45,
                                                 columnNumber: 76
                                             }, undefined),
                                             " ",
-                                            director.name
+                                            setDirector
                                         ]
                                     }, void 0, true, {
                                         fileName: "src/components/movie-view/movie-view.jsx",
-                                        lineNumber: 36,
+                                        lineNumber: 43,
                                         columnNumber: 29
                                     }, undefined)
                                 ]
                             }, void 0, true, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
-                                lineNumber: 29,
+                                lineNumber: 36,
                                 columnNumber: 25
                             }, undefined)
                         }, void 0, false, {
                             fileName: "src/components/movie-view/movie-view.jsx",
-                            lineNumber: 28,
+                            lineNumber: 35,
                             columnNumber: 21
                         }, undefined)
                     ]
                 }, void 0, true, {
                     fileName: "src/components/movie-view/movie-view.jsx",
-                    lineNumber: 17,
+                    lineNumber: 24,
                     columnNumber: 17
                 }, undefined)
             }, void 0, false, {
                 fileName: "src/components/movie-view/movie-view.jsx",
-                lineNumber: 16,
+                lineNumber: 23,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Row), {
@@ -47696,12 +47688,12 @@ const MovieView = ({ user, movies, addFav, removeFav, genres, directors })=>{
                             children: "Similar Movies"
                         }, void 0, false, {
                             fileName: "src/components/movie-view/movie-view.jsx",
-                            lineNumber: 46,
+                            lineNumber: 53,
                             columnNumber: 21
                         }, undefined)
                     }, void 0, false, {
                         fileName: "src/components/movie-view/movie-view.jsx",
-                        lineNumber: 45,
+                        lineNumber: 52,
                         columnNumber: 17
                     }, undefined),
                     /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Col), {
@@ -47712,49 +47704,67 @@ const MovieView = ({ user, movies, addFav, removeFav, genres, directors })=>{
                                 children: "Back"
                             }, void 0, false, {
                                 fileName: "src/components/movie-view/movie-view.jsx",
-                                lineNumber: 50,
+                                lineNumber: 57,
                                 columnNumber: 25
                             }, undefined)
                         }, void 0, false, {
                             fileName: "src/components/movie-view/movie-view.jsx",
-                            lineNumber: 49,
+                            lineNumber: 56,
                             columnNumber: 21
                         }, undefined)
                     }, void 0, false, {
                         fileName: "src/components/movie-view/movie-view.jsx",
-                        lineNumber: 48,
+                        lineNumber: 55,
                         columnNumber: 17
                     }, undefined)
                 ]
             }, void 0, true, {
                 fileName: "src/components/movie-view/movie-view.jsx",
-                lineNumber: 44,
+                lineNumber: 51,
                 columnNumber: 13
             }, undefined),
             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Col), {
                 className: "mt-3 bg-light rounded-2 m-auto p-2",
                 children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Row), {
-                    children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Col), {
+                    children: similarMovies.length === 0 ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Col), {
                         children: "No Similar Movies! (similar movies does not work)"
                     }, void 0, false, {
                         fileName: "src/components/movie-view/movie-view.jsx",
-                        lineNumber: 59,
+                        lineNumber: 66,
                         columnNumber: 29
-                    }, undefined)
+                    }, undefined) : similarMovies.map((movie)=>{
+                        return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Col), {
+                            md: 2,
+                            children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _movieCard.MovieCard), {
+                                movie: movie,
+                                addFav: addFav,
+                                removeFav: removeFav,
+                                user: user
+                            }, void 0, false, {
+                                fileName: "src/components/movie-view/movie-view.jsx",
+                                lineNumber: 71,
+                                columnNumber: 37
+                            }, undefined)
+                        }, movie.id, false, {
+                            fileName: "src/components/movie-view/movie-view.jsx",
+                            lineNumber: 70,
+                            columnNumber: 33
+                        }, undefined);
+                    })
                 }, void 0, false, {
                     fileName: "src/components/movie-view/movie-view.jsx",
-                    lineNumber: 57,
+                    lineNumber: 64,
                     columnNumber: 21
                 }, undefined)
             }, void 0, false, {
                 fileName: "src/components/movie-view/movie-view.jsx",
-                lineNumber: 56,
+                lineNumber: 63,
                 columnNumber: 13
             }, undefined)
         ]
     }, void 0, true, {
         fileName: "src/components/movie-view/movie-view.jsx",
-        lineNumber: 15,
+        lineNumber: 22,
         columnNumber: 9
     }, undefined);
 };
@@ -47772,7 +47782,66 @@ $RefreshReg$(_c, "MovieView");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react-router":"dbWyW","react-bootstrap":"3AD9A","react-bootstrap-icons":"c9Gza","react-router-dom":"9xmpe","../movie-card/movie-card":"bwuIu","@parcel/transformer-js/src/esmodule-helpers.js":"hS3x4","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"lFCqy"}],"9YtA0":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react-router":"dbWyW","react-bootstrap":"3AD9A","react-bootstrap-icons":"c9Gza","react-router-dom":"9xmpe","../movie-card/movie-card":"bwuIu","../genre-card/genre-card":"kxNeW","@parcel/transformer-js/src/esmodule-helpers.js":"hS3x4","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"lFCqy"}],"kxNeW":[function(require,module,exports) {
+var $parcel$ReactRefreshHelpers$6243 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+$parcel$ReactRefreshHelpers$6243.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "GenreCard", ()=>GenreCard);
+var _jsxDevRuntime = require("react/jsx-dev-runtime");
+var _propTypes = require("prop-types");
+var _propTypesDefault = parcelHelpers.interopDefault(_propTypes);
+var _reactBootstrap = require("react-bootstrap");
+const GenreCard = ({ genre })=>{
+    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card), {
+        className: "h-100",
+        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card).Body, {
+            children: [
+                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card).Title, {
+                    children: genre.name
+                }, void 0, false, {
+                    fileName: "src/components/genre-card/genre-card.jsx",
+                    lineNumber: 9,
+                    columnNumber: 17
+                }, undefined),
+                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card).Text, {
+                    children: genre.about
+                }, void 0, false, {
+                    fileName: "src/components/genre-card/genre-card.jsx",
+                    lineNumber: 10,
+                    columnNumber: 17
+                }, undefined)
+            ]
+        }, void 0, true, {
+            fileName: "src/components/genre-card/genre-card.jsx",
+            lineNumber: 8,
+            columnNumber: 13
+        }, undefined)
+    }, void 0, false, {
+        fileName: "src/components/genre-card/genre-card.jsx",
+        lineNumber: 7,
+        columnNumber: 9
+    }, undefined);
+};
+_c = GenreCard;
+GenreCard.propTypes = {
+    genre: (0, _propTypesDefault.default).shape({
+        name: (0, _propTypesDefault.default).string
+    }).isRequired
+};
+var _c;
+$RefreshReg$(_c, "GenreCard");
+
+  $parcel$ReactRefreshHelpers$6243.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react/jsx-dev-runtime":"iTorj","prop-types":"7wKI2","react-bootstrap":"3AD9A","@parcel/transformer-js/src/esmodule-helpers.js":"hS3x4","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"lFCqy"}],"9YtA0":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$9fee = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -48414,66 +48483,7 @@ $RefreshReg$(_c, "ProfileView");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","react-bootstrap":"3AD9A","react":"21dqq","../movie-card/movie-card":"bwuIu","@parcel/transformer-js/src/esmodule-helpers.js":"hS3x4","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"lFCqy"}],"kxNeW":[function(require,module,exports) {
-var $parcel$ReactRefreshHelpers$6243 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
-var prevRefreshReg = window.$RefreshReg$;
-var prevRefreshSig = window.$RefreshSig$;
-$parcel$ReactRefreshHelpers$6243.prelude(module);
-
-try {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "GenreCard", ()=>GenreCard);
-var _jsxDevRuntime = require("react/jsx-dev-runtime");
-var _propTypes = require("prop-types");
-var _propTypesDefault = parcelHelpers.interopDefault(_propTypes);
-var _reactBootstrap = require("react-bootstrap");
-const GenreCard = ({ genre })=>{
-    return /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card), {
-        className: "h-100",
-        children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card).Body, {
-            children: [
-                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card).Title, {
-                    children: genre.name
-                }, void 0, false, {
-                    fileName: "src/components/genre-card/genre-card.jsx",
-                    lineNumber: 9,
-                    columnNumber: 17
-                }, undefined),
-                /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Card).Text, {
-                    children: genre.about
-                }, void 0, false, {
-                    fileName: "src/components/genre-card/genre-card.jsx",
-                    lineNumber: 10,
-                    columnNumber: 17
-                }, undefined)
-            ]
-        }, void 0, true, {
-            fileName: "src/components/genre-card/genre-card.jsx",
-            lineNumber: 8,
-            columnNumber: 13
-        }, undefined)
-    }, void 0, false, {
-        fileName: "src/components/genre-card/genre-card.jsx",
-        lineNumber: 7,
-        columnNumber: 9
-    }, undefined);
-};
-_c = GenreCard;
-GenreCard.propTypes = {
-    genre: (0, _propTypesDefault.default).shape({
-        name: (0, _propTypesDefault.default).string
-    }).isRequired
-};
-var _c;
-$RefreshReg$(_c, "GenreCard");
-
-  $parcel$ReactRefreshHelpers$6243.postlude(module);
-} finally {
-  window.$RefreshReg$ = prevRefreshReg;
-  window.$RefreshSig$ = prevRefreshSig;
-}
-},{"react/jsx-dev-runtime":"iTorj","prop-types":"7wKI2","react-bootstrap":"3AD9A","@parcel/transformer-js/src/esmodule-helpers.js":"hS3x4","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"lFCqy"}],"cJ3MH":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","react-bootstrap":"3AD9A","react":"21dqq","../movie-card/movie-card":"bwuIu","@parcel/transformer-js/src/esmodule-helpers.js":"hS3x4","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"lFCqy"}],"cJ3MH":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$15d4 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;
@@ -48625,7 +48635,7 @@ $RefreshReg$(_c, "DirectorCard");
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react/jsx-dev-runtime":"iTorj","prop-types":"7wKI2","react":"21dqq","react-bootstrap":"3AD9A","@parcel/transformer-js/src/esmodule-helpers.js":"hS3x4","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"lFCqy","react-router-dom":"9xmpe"}],"bsPVM":[function(require,module,exports) {
+},{"react/jsx-dev-runtime":"iTorj","prop-types":"7wKI2","react":"21dqq","react-bootstrap":"3AD9A","react-router-dom":"9xmpe","@parcel/transformer-js/src/esmodule-helpers.js":"hS3x4","@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"lFCqy"}],"bsPVM":[function(require,module,exports) {
 var $parcel$ReactRefreshHelpers$abf5 = require("@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
 var prevRefreshReg = window.$RefreshReg$;
 var prevRefreshSig = window.$RefreshSig$;

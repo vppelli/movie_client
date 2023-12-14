@@ -3,13 +3,20 @@ import { Col, Button, Row, Card } from "react-bootstrap";
 import { BookmarkPlus, BookmarkCheckFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
+import { GenreCard } from "../genre-card/genre-card";
 
-export const MovieView = ({ user, movies, addFav, removeFav, genres, directors }) => {
+export const MovieView = ({ user, movies, addFav, removeFav }) => {
     const { movieId } = useParams();
     const movie = movies.find((m) => m.id === movieId);
 
-    const genre = genres.filter(g => g.id == movie.genre);
-    const director = directors.filter(d => d.id == movie.director);
+    const getGenre = movie.genre;
+    const setGenre = getGenre.join(", ");
+    const getDirector = movie.director;
+    const setDirector = getDirector.join(", ");
+
+    const similarMovies = movies.filter((m) => {
+        return m.genre === movie.genre;
+    });
 
     return (
         <Col>
@@ -31,11 +38,11 @@ export const MovieView = ({ user, movies, addFav, removeFav, genres, directors }
                                 <span className="fs-1">{ movie.title }</span>
                             </Card.Text>
                             <Card.Text>
-                                Released { movie.released } <br></br> Genres { genre.name }
+                                Released { movie.released } <br></br> Genres ( { setGenre } )
                             </Card.Text>
                             <Card.Text>
                                     <span className="fs-2">Description</span> <br></br> { movie.description } <br></br>
-                                    <span className="fs-2">Director</span> <br></br> { director.name }
+                                    <span className="fs-2">Director</span> <br></br> { setDirector }
                             </Card.Text>
                         </Card.Body>
                     </Col>
@@ -55,16 +62,16 @@ export const MovieView = ({ user, movies, addFav, removeFav, genres, directors }
             </Row>
             <Col className = "mt-3 bg-light rounded-2 m-auto p-2">
                     <Row>
-                        {/* { similarMovies.length === 0 ? ( */}
+                        { similarMovies.length === 0 ? (
                             <Col>No Similar Movies! (similar movies does not work)</Col>
-                        {/* ) :
+                        ) :
                         similarMovies.map((movie) => {
                             return (
                                 <Col key = { movie.id } md = {2}>
-                                    <MovieCard movie = { movies } addFav = { addFav } removeFav = { removeFav } user = { user }/>
+                                    <MovieCard movie = { movie } addFav = { addFav } removeFav = { removeFav } user = { user }/>
                                 </Col>
                             )
-                        })} */}
+                        })}
                     </Row>
                 </Col>
         </Col>

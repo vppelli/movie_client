@@ -20,93 +20,66 @@ export const MainView = () => {
     const [directors, setDirectors] = useState([]);
 
     useEffect(() => {
-
         if (!token) {
-            return;
-        }
-
-        const fetchMyApi = async () => {
-            const data = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/movies", { headers: { Authorization: `Bearer ${token}` } });
-            return data
-        }
-        fetchMyApi()
-            .then((response) => response.json())
-            .then((data) => {
-                const moviesFromApi = data.map((movie) => {
-                    return {
-                        id: movie._id,
-                        title: movie.Title,
-                        released: movie.Released,
-                        genre: movie.Genre,
-                        director: movie.Director,
-                        image: movie.ImagePath,
-                        description: movie.Description
-                    };
-                });
-
-                setMovies(moviesFromApi);
-            })
-            .catch(error => {
-                console.error("Error: ", error);
-            });
-    }, [token]);
-
-    useEffect(() => {
-
-        if (!token) {
-            return;
+        return;
         }
 
         const fetchGenres = async () => {
-            const data = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/genres", { headers: { Authorization: `Bearer ${token}` } });
-            return data
-        }
-        fetchGenres()
-            .then((response) => response.json())
-            .then((data) => {
-                const genresFromApi = data.map((genre) => {
-                    return {
-                        id: genre._id,
-                        name: genre.Name,
-                        about: genre.About
-                    };
-                });
-
-                setGenres(genresFromApi);
-            })
-            .catch(error => {
-                console.error("Error: ", error);
-            });
-    }, [token]);
-
-    useEffect(() => {
-
-        if (!token) {
-            return;
-        }
+            const response = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/genres", { headers: { Authorization: `Bearer ${token}` } });
+            const data = await response.json();
+            return data.map((genre) => ({
+                id: genre._id,
+                name: genre.Name,
+                about: genre.About
+            }));
+        };
 
         const fetchDirectors = async () => {
-            const data = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/directors", { headers: { Authorization: `Bearer ${token}` } });
-            return data
-        }
-        fetchDirectors()
-            .then((response) => response.json())
-            .then((data) => {
-                const directorsFromApi = data.map((director) => {
-                    return {
-                        id: director._id,
-                        name: director.Name,
-                        bio: director.Bio,
-                        born: director.Born,
-                        dead: director.Dead
-                    };
-                });
+            const response = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/directors", { headers: { Authorization: `Bearer ${token}` } });
+            const data = await response.json();
+            return data.map((director) => ({
+                id: director._id,
+                name: director.Name,
+                bio: director.Bio,
+                born: director.Born,
+                dead: director.Dead
+            }));
+        };
 
-                setDirectors(directorsFromApi);
-            })
-            .catch(error => {
-                console.error("Error: ", error);
+        Promise.all([fetchGenres(), fetchDirectors()])
+        .then(([genresFromApi, directorsFromApi]) => {
+            setGenres(genresFromApi);
+            setDirectors(directorsFromApi);
+
+            return fetch("https://movie-mikes-7b54f5710543.herokuapp.com/movies", { headers: { Authorization: `Bearer ${token}` } });
+        })
+        .then(response => response.json())
+        .then(data => {
+            const moviesFromApi = data.map((movie) => {
+                movie.genre = movie.Genre.map(genreId => {
+                    const genreObj = genres.find(genre => genre.id === genreId);
+                    return genreObj ? genreObj.name : genreId;
+                });
+                movie.director = movie.Director.map(directorId => {
+                    const directorObj = directors.find(director => director.id === directorId);
+                    return directorObj ? directorObj.name : directorId;
+                });
+                return {
+                    id: movie._id,
+                    title: movie.Title,
+                    released: movie.Released,
+                    genre: movie.genre,
+                    director: movie.director,
+                    image: movie.ImagePath,
+                    description: movie.Description
+                };
             });
+
+            setMovies(moviesFromApi);
+        })
+        .catch(error => {
+            console.error('Error: ', error);
+        });
     }, [token]);
 
     const addFavorite = (movieId) => {
@@ -209,7 +182,7 @@ export const MainView = () => {
                                     <Col>There is no movie</Col>
                                 ) : (
                                     <Col md = {12}>
-                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } user = { user } genres = { genres } directors = { directors } />
+                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } user = { user } />
                                     </Col>
                                 )}
                             </>
