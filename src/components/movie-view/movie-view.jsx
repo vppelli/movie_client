@@ -63,7 +63,7 @@ export const MovieView = ({ user, movies, addFav, removeFav }) => {
             <Col className = "mt-3 bg-light rounded-2 m-auto p-2">
                     <Row>
                         { similarMovies.length === 0 ? (
-                            <Col>No Similar Movies! (similar movies does not work)</Col>
+                            <Col>No Similar Movies!</Col>
                         ) :
                         similarMovies.map((movie) => {
                             return (
