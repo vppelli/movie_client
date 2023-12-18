@@ -3,7 +3,6 @@ import { Col, Button, Row, Card } from "react-bootstrap";
 import { BookmarkPlus, BookmarkCheckFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
-import { GenreCard } from "../genre-card/genre-card";
 
 export const MovieView = ({ user, movies, addFav, removeFav }) => {
     const { movieId } = useParams();

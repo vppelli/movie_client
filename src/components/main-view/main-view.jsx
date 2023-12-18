@@ -6,7 +6,7 @@ import { SignupView } from "../signup-view/signup-view";
 import { ProfileView } from "../profile-view/profile-view";
 import { GenreCard } from "../genre-card/genre-card";
 import { DirectorCard } from "../director-card/director-card";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
@@ -18,6 +18,7 @@ export const MainView = () => {
     const [token, setToken] = useState(storedToken ? storedToken : null);
     const [genres, setGenres] = useState([]);
     const [directors, setDirectors] = useState([]);
+    const [filter, setFilter] = useState("");
 
     useEffect(() => {
         if (!token) {
@@ -190,6 +191,19 @@ export const MainView = () => {
                     />
                     {/* Return MovieCards if logged in */}
                     <Route 
+                    path = "/"
+                    element = {
+                        <>
+                            {!user ? (
+                                    <Navigate to = "/login" replace />
+                                ) : (
+                                    <Col>Welcome</Col>
+                                )}
+                        </>
+                    }
+                    />
+                    {/* Return MovieCards if logged in */}
+                    <Route 
                     path = "/movies"
                     element = {
                         <>
@@ -199,7 +213,26 @@ export const MainView = () => {
                                     <Col>There is no movie</Col>
                                 ) : (
                                     <>
-                                        { movies.map((movie) => (
+                                        <Form className = "form-inline m-5 d-flex justify-content-center">
+                                            <Form.Select className = "ms-1 ms-md-3 w-25" aria-label = "Default filter genre" onChange = {(e) => setFilter(e.target.value)}>
+                                                <option value = ""> Filter by genre </option>
+                                                <option value = "Action">Action</option>
+                                                <option value = "Adventure">Adventure</option>
+                                                <option value = "Fantasy">Fantasy</option>
+                                                <option value = "Horror">Horror</option>
+                                                <option value = "Sci-fi">Sci-fi</option>
+                                                <option value = "War">War</option>
+                                                <option value = "Thriller">Thriller</option>
+                                                <option value = "Drama">Drama</option>
+                                                <option value = "Comedy">Comedy</option>
+                                            </Form.Select>
+                                        </Form>
+                                        { movies.filter((movie) => {
+                                            return filter === ""
+                                            ? movie
+                                            : movie.genre === filter;
+                                        })
+                                        .map((movie) => (
                                             <Col md = {6} lg = {4} xl = {3} className = "mb-5" key = { movie.id }>
                                                 <MovieCard movie = { movie } addFav = { addFavorite } removeFav = { removeFavorite } user = { user }/>
                                             </Col>
