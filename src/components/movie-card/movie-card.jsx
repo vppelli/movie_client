@@ -1,18 +1,27 @@
 import PropTypes from "prop-types";
-import { Button, Card } from "react-bootstrap";
+import { Card } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { BookmarkPlus, BookmarkCheckFill } from "react-bootstrap-icons";
 
-export const MovieCard = ({ movie, onMovieClick }) => {
+export const MovieCard = ({ movie, user, removeFav, addFav }) => {
+
     return (
-        <Card className = "h-100" onClick={() => onMovieClick(movie)}>
-            <Card.Img variant = "top" src = { movie.image } />
-            <Card.Body>
-                <Card.Title>{ movie.title }</Card.Title>
-                <Card.Text>{ movie.released }</Card.Text>
-                <Button onClick={() => onMovieClick(movie)} variant = "link">
-                    Open
-                </Button>
-            </Card.Body>
-        </Card>
+        <Link to = {`/movies/${encodeURIComponent(movie.id)}`} className = "text-decoration-none">
+            <Card className = "h-100">
+                <Card.Img variant = "top" src = { movie.image } />
+                <Card.ImgOverlay>
+                    {user.FavoriteMovies.includes(movie.id) ? (
+                        <BookmarkCheckFill size = {32} color = "orange" className = "bottom-0 end-0" onClick = {() => removeFav(movie.id)}/>
+                    ) : (
+                        <BookmarkPlus size = {32} color = "orange" className = "bottom-0 end-0" onClick = {() => addFav(movie.id)}/>
+                    )}
+                </Card.ImgOverlay>
+                <Card.Body>
+                    <Card.Title>{ movie.title }</Card.Title>
+                    <Card.Text>{ movie.released }</Card.Text>
+                </Card.Body>
+            </Card>
+        </Link>
     );
 };
 
@@ -20,5 +29,4 @@ MovieCard.propTypes = {
     movie: PropTypes.shape({
         title: PropTypes.string
     }).isRequired,
-    onMovieClick: PropTypes.func.isRequired
 };
