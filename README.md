@@ -39,5 +39,5 @@ link: [Movie-Mikes](https://moviemikes.netlify.app/login)
 - process (dev)
 
 ## WebHost Used
-- Netlify Link: [https://www.netlify.com/](https://www.netlify.com/)
+- Netlify Link: [https://www.netlify.com](https://www.netlify.com/)
 
