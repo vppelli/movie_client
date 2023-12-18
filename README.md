@@ -2,15 +2,15 @@
 This web application provides users with access to information about different movies, directors, and genres. Users can sign up, update their personal information, and create a list of their favorite movies.
 
 ## Using MovieMike's
-- Must login or create a account to use
-- Once logged-in a list of Movies will show.
+- Must login or create account.
+- Once logged-in, list of Movies will show.
  ( 11 movies total )
 - You can Filter by genre.
 - You can Search by Name.
 - You can explore Profile, Genre, and Director tabs freely.
 - Want to update User info? Profile tab allows you to do that.
 
-### Hosted on Netlify
+### Hosted Version
 link: [Movie-Mikes](https://moviemikes.netlify.app/login)
 
 ## Hosting yourself
