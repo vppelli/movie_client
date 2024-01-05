@@ -1,5 +1,4 @@
 # MovieMike's Clinet
-https://img.shields.io/badge/Movies_API-open-red
 
 [![Movie API][API-shield]][API-url]
 
