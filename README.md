@@ -1,6 +1,7 @@
 # MovieMike's Clinet
+https://img.shields.io/badge/Movies_API-open-red
 
-[![Movie API][API-shield]][https://github.com/vppelli/movie_api]
+[![Movie API][API-shield]][API-url]
 
 ## Description
 This web application provides users with access to information about different movies, directors, and genres. Users can sign up, update their personal information, and create a list of their favorite movies.
@@ -45,3 +46,5 @@ link: [Movie-Mikes](https://moviemikes.netlify.app/login)
 ## WebHost Used
 - Netlify Link: [https://www.netlify.com](https://www.netlify.com/)
 
+[API-shield]: https://img.shields.io/badge/Movies_API-open-red
+[API-url]: https://github.com/vppelli/movie_api
