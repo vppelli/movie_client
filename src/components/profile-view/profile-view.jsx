@@ -2,7 +2,7 @@ import { Col, Row, Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 
-export const ProfileView = ({ user, token, movies, addFav, removeFav, updatedUser }) => {
+export const ProfileView = ({ user, token, movies, addFav, removeFav, updatedUser, logOut }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -47,7 +47,8 @@ export const ProfileView = ({ user, token, movies, addFav, removeFav, updatedUse
         fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {
             if (response.ok) {
-                window.location.reload();
+                <Navigate to="/login" replace />
+                logOut();
                 alert("Account has been Deleted");
             } else {
                 alert("Failed to Delete Account")
