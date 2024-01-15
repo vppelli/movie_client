@@ -5,7 +5,7 @@ export const NavigationBar = ({ user, onLoggedOut }) => {
     return (
         <Navbar bg = "light" expand = "lg" className = "rounded-2">
             <Container>
-                <Navbar.Brand as = { Link } to = "/">
+                <Navbar.Brand as = { Link } to = "/movies">
                     Movie App
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls = "basic-navbar-nav" />

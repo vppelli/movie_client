@@ -3,9 +3,8 @@ import { Col, Button, Row, Card } from "react-bootstrap";
 import { BookmarkPlus, BookmarkCheckFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
-import { GenreCard } from "../genre-card/genre-card";
 
-export const MovieView = ({ user, movies, addFav, removeFav }) => {
+export const MovieView = ({ user, movies, addFav, removeFav, isFavorite }) => {
     const { movieId } = useParams();
     const movie = movies.find((m) => m.id === movieId);
 
@@ -26,7 +25,7 @@ export const MovieView = ({ user, movies, addFav, removeFav }) => {
                         <img src = { movie.image } className = "img-fluid rounded-start"/>
                     </Col>
                     <Card.ImgOverlay>
-                        {user.FavoriteMovies.includes(movie.id) ? (
+                        {isFavorite ? (
                             <BookmarkCheckFill size = {40} color = "orange" className = "fav-button mt-2 me-2 top-0 end-0" onClick = {() => removeFav(movie.id)}/>
                         ) : (
                             <BookmarkPlus size = {40} color = "orange" className = "fav-button mt-2 me-2 top-0 end-0" onClick = {() => addFav(movie.id)}/>
@@ -68,7 +67,7 @@ export const MovieView = ({ user, movies, addFav, removeFav }) => {
                         similarMovies.map((movie) => {
                             return (
                                 <Col key = { movie.id } md = {2}>
-                                    <MovieCard movie = { movie } addFav = { addFav } removeFav = { removeFav } user = { user }/>
+                                    <MovieCard movie = { movie } addFav = { addFav } removeFav = { removeFav } user = { user } isFavorite = { isFavorite }/>
                                 </Col>
                             )
                         })}

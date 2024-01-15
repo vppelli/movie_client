@@ -2,7 +2,7 @@ import { Col, Row, Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 
-export const ProfileView = ({ user, token, movies, addFav, removeFav, setUser }) => {
+export const ProfileView = ({ user, token, movies, addFav, removeFav, updatedUser }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -32,9 +32,8 @@ export const ProfileView = ({ user, token, movies, addFav, removeFav, setUser })
             if (response.ok) {
                 const updated = await response.json();
                 localStorage.setItem("user", JSON.stringify(updated));
-                setUser(updated);
+                updatedUser(updated);
                 alert("Updated Information");
-                window.location.reload();
             } else {
                 alert("Update failed Username, Password, and Email required");
             }

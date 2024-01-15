@@ -6,7 +6,7 @@ import { SignupView } from "../signup-view/signup-view";
 import { ProfileView } from "../profile-view/profile-view";
 import { GenreCard } from "../genre-card/genre-card";
 import { DirectorCard } from "../director-card/director-card";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
 import { NavigationBar } from "../navigation-bar/navigation-bar";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
@@ -18,6 +18,11 @@ export const MainView = () => {
     const [token, setToken] = useState(storedToken ? storedToken : null);
     const [genres, setGenres] = useState([]);
     const [directors, setDirectors] = useState([]);
+    const [filter, setFilter] = useState("");
+    const updatedUser = (user) => {
+        setUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
+    };
 
     useEffect(() => {
         if (!token) {
@@ -82,6 +87,14 @@ export const MainView = () => {
         });
     }, [token]);
 
+    const [isFavorite, setIsFavorite] = useState(false);
+    
+    useEffect(() => {
+        if (user.favorite_movies && user.favorite_movies.includes(movie._id)) {
+          setIsFavorite(true);
+        }
+    }, [user]);
+
     const addFavorite = (movieId) => {
         fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movieId}`, { method: "POST", headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {
@@ -94,8 +107,8 @@ export const MainView = () => {
         .then((user) => {
             if (user) {
                 localStorage.setItem("user", JSON.stringify(user));
-                setUser(user);
-                window.location.reload();
+                updatedUser(user);
+                setIsFavorite(true);
             }
         })
         .catch(error => {
@@ -115,8 +128,8 @@ export const MainView = () => {
         .then((user) => {
             if (user) {
                 localStorage.setItem("user", JSON.stringify(user));
-                setUser(user);
-                window.location.reload();
+                updatedUser(user);
+                setIsFavorite(false);
             }
         })
         .catch(error => {
@@ -182,11 +195,24 @@ export const MainView = () => {
                                     <Col>There is no movie</Col>
                                 ) : (
                                     <Col md = {12}>
-                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } user = { user } />
+                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } user = { user } isFavorite = { isFavorite }/>
                                     </Col>
                                 )}
                             </>
                         }
+                    />
+                    {/* Return MovieCards if logged in */}
+                    <Route 
+                    path = "/"
+                    element = {
+                        <>
+                            {!user ? (
+                                    <Navigate to = "/login" replace />
+                                ) : (
+                                    <Col>Welcome</Col>
+                                )}
+                        </>
+                    }
                     />
                     {/* Return MovieCards if logged in */}
                     <Route 
@@ -199,9 +225,28 @@ export const MainView = () => {
                                     <Col>There is no movie</Col>
                                 ) : (
                                     <>
-                                        { movies.map((movie) => (
+                                        <Form className = "form-inline m-5 d-flex justify-content-center">
+                                            <Form.Select className = "ms-1 ms-md-3 w-25" aria-label = "Default filter genre" onChange = {(e) => setFilter(e.target.value)}>
+                                                <option value = ""> Filter by genre </option>
+                                                <option value = "Action">Action</option>
+                                                <option value = "Adventure">Adventure</option>
+                                                <option value = "Fantasy">Fantasy</option>
+                                                <option value = "Horror">Horror</option>
+                                                <option value = "Sci-fi">Sci-fi</option>
+                                                <option value = "War">War</option>
+                                                <option value = "Thriller">Thriller</option>
+                                                <option value = "Drama">Drama</option>
+                                                <option value = "Comedy">Comedy</option>
+                                            </Form.Select>
+                                        </Form>
+                                        { movies.filter((movie) => {
+                                            return filter === ""
+                                            ? movie
+                                            : movie.genre === filter;
+                                        })
+                                        .map((movie) => (
                                             <Col md = {6} lg = {4} xl = {3} className = "mb-5" key = { movie.id }>
-                                                <MovieCard movie = { movie } addFav = { addFavorite } removeFav = { removeFavorite } user = { user }/>
+                                                <MovieCard movie = { movie } addFav = { addFavorite } removeFav = { removeFavorite } isFavorite = { isFavorite }/>
                                             </Col>
                                         ))}
                                     </>
@@ -266,7 +311,12 @@ export const MainView = () => {
                                     token = { token }
                                     addFav = { addFavorite }
                                     removeFav = { removeFavorite }
-                                    setUser = { setUser }
+                                    updatedUser = { updatedUser }
+                                    logOut={() => {
+                                        setUser(null);
+                                        setMovies(null);
+                                        localStorage.clear();
+                                    }}
                                     />
                                 </Col>
                             )}
