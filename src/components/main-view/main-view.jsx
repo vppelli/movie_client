@@ -90,7 +90,7 @@ export const MainView = () => {
     const [isFavorite, setIsFavorite] = useState(false);
     
     useEffect(() => {
-        if (user.favorite_movies && user.favorite_movies.includes(movie._id)) {
+        if (user.FavoriteMovies && user.FavoriteMovies.includes(movies._id)) {
           setIsFavorite(true);
         }
     }, [user]);
