@@ -90,7 +90,7 @@ export const MainView = () => {
     const [isFavorite, setIsFavorite] = useState(false);
     
     useEffect(() => {
-        if (user.FavoriteMovies && user.FavoriteMovies.includes(movies._id)) {
+        if (user.FavoriteMovies && user.FavoriteMovies.includes(movies.id)) {
           setIsFavorite(true);
         }
     }, [user]);
@@ -195,7 +195,7 @@ export const MainView = () => {
                                     <Col>There is no movie</Col>
                                 ) : (
                                     <Col md = {12}>
-                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } user = { user } isFavorite = { isFavorite }/>
+                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } isFavorite = { isFavorite }/>
                                     </Col>
                                 )}
                             </>

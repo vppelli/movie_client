@@ -89,7 +89,7 @@ export const ProfileView = ({ user, token, movies, addFav, removeFav, updatedUse
                         favoriteMovies.map((movie) => {
                             return (
                                 <Col key = { movie.id } md = {2}>
-                                    <MovieCard movie = { movie } addFav = { addFav } removeFav = { removeFav } user = { user }/>
+                                    <MovieCard movie = { movie } addFav = { addFav } removeFav = { removeFav } isFavorite = { isFavorite }/>
                                 </Col>
                             )
                         })}
