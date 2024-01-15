@@ -19,6 +19,10 @@ export const MainView = () => {
     const [genres, setGenres] = useState([]);
     const [directors, setDirectors] = useState([]);
     const [filter, setFilter] = useState("");
+    const updatedUser = (user) => {
+        setUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
+    };
 
     useEffect(() => {
         if (!token) {
@@ -83,6 +87,14 @@ export const MainView = () => {
         });
     }, [token]);
 
+    const [isFavorite, setIsFavorite] = useState(false);
+    
+    useEffect(() => {
+        if (user.favorite_movies && user.favorite_movies.includes(movie._id)) {
+          setIsFavorite(true);
+        }
+    }, [user]);
+
     const addFavorite = (movieId) => {
         fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movieId}`, { method: "POST", headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {
@@ -95,8 +107,8 @@ export const MainView = () => {
         .then((user) => {
             if (user) {
                 localStorage.setItem("user", JSON.stringify(user));
-                setUser(user);
-                window.location.reload();
+                updatedUser(user);
+                setIsFavorite(true);
             }
         })
         .catch(error => {
@@ -116,8 +128,8 @@ export const MainView = () => {
         .then((user) => {
             if (user) {
                 localStorage.setItem("user", JSON.stringify(user));
-                setUser(user);
-                window.location.reload();
+                updatedUser(user);
+                setIsFavorite(false);
             }
         })
         .catch(error => {
@@ -183,7 +195,7 @@ export const MainView = () => {
                                     <Col>There is no movie</Col>
                                 ) : (
                                     <Col md = {12}>
-                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } user = { user } />
+                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } user = { user } isFavorite = { isFavorite }/>
                                     </Col>
                                 )}
                             </>
@@ -234,7 +246,7 @@ export const MainView = () => {
                                         })
                                         .map((movie) => (
                                             <Col md = {6} lg = {4} xl = {3} className = "mb-5" key = { movie.id }>
-                                                <MovieCard movie = { movie } addFav = { addFavorite } removeFav = { removeFavorite } user = { user }/>
+                                                <MovieCard movie = { movie } addFav = { addFavorite } removeFav = { removeFavorite } isFavorite = { isFavorite }/>
                                             </Col>
                                         ))}
                                     </>
@@ -299,7 +311,12 @@ export const MainView = () => {
                                     token = { token }
                                     addFav = { addFavorite }
                                     removeFav = { removeFavorite }
-                                    setUser = { setUser }
+                                    updatedUser = { updatedUser }
+                                    logOut={() => {
+                                        setUser(null);
+                                        setMovies(null);
+                                        localStorage.clear();
+                                    }}
                                     />
                                 </Col>
                             )}
