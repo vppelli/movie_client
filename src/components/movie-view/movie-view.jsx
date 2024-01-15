@@ -4,7 +4,7 @@ import { BookmarkPlus, BookmarkCheckFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
 
-export const MovieView = ({ movies, addFav, removeFav, isFavorite }) => {
+export const MovieView = ({ movies, user, updatedUser, token }) => {
     const { movieId } = useParams();
     const movie = movies.find((m) => m.id === movieId);
 
@@ -24,13 +24,13 @@ export const MovieView = ({ movies, addFav, removeFav, isFavorite }) => {
                     <Col md = {4}>
                         <img src = { movie.image } className = "img-fluid rounded-start"/>
                     </Col>
-                    <Card.ImgOverlay>
+                    {/* <Card.ImgOverlay>
                         {isFavorite ? (
                             <BookmarkCheckFill size = {40} color = "orange" className = "fav-button mt-2 me-2 top-0 end-0" onClick = {() => removeFav(movie.id)}/>
                         ) : (
                             <BookmarkPlus size = {40} color = "orange" className = "fav-button mt-2 me-2 top-0 end-0" onClick = {() => addFav(movie.id)}/>
                         )}
-                    </Card.ImgOverlay>
+                    </Card.ImgOverlay> */}
                     <Col md = {8}>
                         <Card.Body>
                             <Card.Text>
@@ -67,7 +67,7 @@ export const MovieView = ({ movies, addFav, removeFav, isFavorite }) => {
                         similarMovies.map((movie) => {
                             return (
                                 <Col key = { movie.id } md = {2}>
-                                    <MovieCard movie = { movie } addFav = { addFav } removeFav = { removeFav } isFavorite = { isFavorite }/>
+                                    <MovieCard movie = { movie } user = { user } updatedUser = { updatedUser } token = { token }/>
                                 </Col>
                             )
                         })}

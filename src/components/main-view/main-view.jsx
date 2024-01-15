@@ -87,56 +87,6 @@ export const MainView = () => {
         });
     }, [token]);
 
-    const [isFavorite, setIsFavorite] = useState(false);
-    
-    useEffect(() => {
-        if (user.FavoriteMovies && user.FavoriteMovies.includes(movies.id)) {
-          setIsFavorite(true);
-        }
-    }, [user]);
-
-    const addFavorite = (movieId) => {
-        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movieId}`, { method: "POST", headers: { Authorization: `Bearer ${token}` } })
-        .then((response) => {
-            if (response.ok) {
-                alert("Movie added to Favorites");
-            } else {
-                alert("Failed to add");
-            }
-        })
-        .then((user) => {
-            if (user) {
-                localStorage.setItem("user", JSON.stringify(user));
-                updatedUser(user);
-                setIsFavorite(true);
-            }
-        })
-        .catch(error => {
-            console.error("Failed: ", error);
-        });
-    };
-
-    const removeFavorite = (movieId) => {
-        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movieId}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } })
-        .then((response) => {
-            if (response.ok) {
-                alert("Movie removed from Favorites");
-            } else {
-                alert("Failed to add");
-            }
-        })
-        .then((user) => {
-            if (user) {
-                localStorage.setItem("user", JSON.stringify(user));
-                updatedUser(user);
-                setIsFavorite(false);
-            }
-        })
-        .catch(error => {
-            console.error("Failed: ", error);
-        });
-    };
-
     return (
         <BrowserRouter>
             <NavigationBar
@@ -195,7 +145,7 @@ export const MainView = () => {
                                     <Col>There is no movie</Col>
                                 ) : (
                                     <Col md = {12}>
-                                        <MovieView movies = { movies } addFav = { addFavorite } removeFav = { removeFavorite } isFavorite = { isFavorite }/>
+                                        <MovieView movies = { movies } user = { user } updatedUser = { updatedUser } token = { token }/>
                                     </Col>
                                 )}
                             </>
@@ -246,7 +196,7 @@ export const MainView = () => {
                                         })
                                         .map((movie) => (
                                             <Col md = {6} lg = {4} xl = {3} className = "mb-5" key = { movie.id }>
-                                                <MovieCard movie = { movie } addFav = { addFavorite } removeFav = { removeFavorite } isFavorite = { isFavorite }/>
+                                                <MovieCard movie = { movie } user = { user } updatedUser = { updatedUser } token = { token }/>
                                             </Col>
                                         ))}
                                     </>
@@ -309,8 +259,6 @@ export const MainView = () => {
                                     user = { user }
                                     movies = { movies }
                                     token = { token }
-                                    addFav = { addFavorite }
-                                    removeFav = { removeFavorite }
                                     updatedUser = { updatedUser }
                                     logOut={() => {
                                         setUser(null);

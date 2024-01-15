@@ -2,7 +2,7 @@ import { Col, Row, Button, Form } from "react-bootstrap";
 import { useState } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 
-export const ProfileView = ({ user, token, movies, addFav, removeFav, updatedUser, logOut }) => {
+export const ProfileView = ({ user, token, movies, updatedUser, logOut }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -89,7 +89,7 @@ export const ProfileView = ({ user, token, movies, addFav, removeFav, updatedUse
                         favoriteMovies.map((movie) => {
                             return (
                                 <Col key = { movie.id } md = {2}>
-                                    <MovieCard movie = { movie } addFav = { addFav } removeFav = { removeFav } isFavorite = { isFavorite }/>
+                                    <MovieCard movie = { movie } user = { user } updatedUser = { updatedUser } token = { token }/>
                                 </Col>
                             )
                         })}
