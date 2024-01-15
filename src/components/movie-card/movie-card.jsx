@@ -61,9 +61,9 @@ export const MovieCard = ({ movie, user, updatedUser, token }) => {
                 <Card.Img variant = "top" src = { movie.image } />
                 <Card.ImgOverlay>
                     {isFavorite ? (
-                        <BookmarkCheckFill size = {32} color = "orange" className = "bottom-0 end-0" onClick = {addFavorite}/>
+                        <BookmarkCheckFill size = {32} color = "orange" className = "bottom-0 end-0" onClick = {removeFavorite}/>
                     ) : (
-                        <BookmarkPlus size = {32} color = "orange" className = "bottom-0 end-0" onClick = {removeFavorite}/>
+                        <BookmarkPlus size = {32} color = "orange" className = "bottom-0 end-0" onClick = {addFavorite}/>
                     )}
                 </Card.ImgOverlay>
                 <Card.Body>
