@@ -13,11 +13,10 @@ export const MovieCard = ({ movie, user, updatedUser, token }) => {
         }
     }, [user]);
 
-    const addFavorite = () => {
-        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movie.id}`, { method: "POST", headers: { Authorization: `Bearer ${token}` } })
+    const addFavorite = (movieId) => {
+        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movieId}`, { method: "POST", headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {
             if (response.ok) {
-                alert("Movie added to Favorites");
                 return response.json();
             } else {
                 alert("Failed to add");
@@ -25,6 +24,7 @@ export const MovieCard = ({ movie, user, updatedUser, token }) => {
         })
         .then((user) => {
             if (user) {
+                alert("Movie added to Favorites");
                 localStorage.setItem("user", JSON.stringify(user));
                 updatedUser(user);
                 setIsFavorite(true);
@@ -35,11 +35,10 @@ export const MovieCard = ({ movie, user, updatedUser, token }) => {
         });
     };
 
-    const removeFavorite = () => {
-        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movie.id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } })
+    const removeFavorite = (movieId) => {
+        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movieId}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {
             if (response.ok) {
-                alert("Movie removed from Favorites");
                 return response.json();
             } else {
                 alert("Failed to add");
@@ -47,6 +46,7 @@ export const MovieCard = ({ movie, user, updatedUser, token }) => {
         })
         .then((user) => {
             if (user) {
+                alert("Movie removed from Favorites");
                 localStorage.setItem("user", JSON.stringify(user));
                 updatedUser(user);
                 setIsFavorite(false);
