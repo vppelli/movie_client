@@ -50,6 +50,7 @@ export const ProfileView = ({ user, token, movies, updatedUser, logOut }) => {
                 <Navigate to="/login" replace />
                 logOut();
                 alert("Account has been Deleted");
+                return response.json();
             } else {
                 alert("Failed to Delete Account")
             }

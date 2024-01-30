@@ -18,6 +18,7 @@ export const MovieCard = ({ movie, user, updatedUser, token }) => {
         .then((response) => {
             if (response.ok) {
                 alert("Movie added to Favorites");
+                return response.json();
             } else {
                 alert("Failed to add");
             }
@@ -39,6 +40,7 @@ export const MovieCard = ({ movie, user, updatedUser, token }) => {
         .then((response) => {
             if (response.ok) {
                 alert("Movie removed from Favorites");
+                return response.json();
             } else {
                 alert("Failed to add");
             }
