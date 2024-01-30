@@ -13,8 +13,8 @@ export const MovieCard = ({ movie, user, updatedUser, token }) => {
         }
     }, [user]);
 
-    const addFavorite = (movieId) => {
-        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movieId}`, { method: "POST", headers: { Authorization: `Bearer ${token}` } })
+    const addFavorite = () => {
+        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movie.id}`, { method: "POST", headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {
             if (response.ok) {
                 return response.json();
@@ -35,8 +35,8 @@ export const MovieCard = ({ movie, user, updatedUser, token }) => {
         });
     };
 
-    const removeFavorite = (movieId) => {
-        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movieId}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } })
+    const removeFavorite = () => {
+        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movie.id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } })
         .then((response) => {
             if (response.ok) {
                 return response.json();
