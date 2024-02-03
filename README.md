@@ -5,7 +5,8 @@
 # Description
 This web application provides users with access to information about different movies, directors, and genres. Users can sign up, update their personal information, and create a list of their favorite movies.
 ## Objective
-To build the server-side component of a “movies” web application. The web application will provide users with access to information about different movies, directors, and genres. Users will be able to sign up, update their personal information, and create a list of their favorite movies.
+Using React, build the client-side for the app called MovieMike's based on its existing server-side code (Movie API and database).
+
 
 ## Using MovieMike's
 - Must login or create account.
