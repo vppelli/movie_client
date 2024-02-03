@@ -1,9 +1,11 @@
-# MovieMike's Clinet
+[![MovieClient](https://github.com/vppelli/Vppelli/blob/main/img/MOVEMIKE’S.png)](https://moviemikes.netlify.app/login)
 
 [![Movie API][API-shield]][API-url]
 
-## Description
+# Description
 This web application provides users with access to information about different movies, directors, and genres. Users can sign up, update their personal information, and create a list of their favorite movies.
+## Objective
+To build the server-side component of a “movies” web application. The web application will provide users with access to information about different movies, directors, and genres. Users will be able to sign up, update their personal information, and create a list of their favorite movies.
 
 ## Using MovieMike's
 - Must login or create account.
@@ -14,8 +16,8 @@ This web application provides users with access to information about different m
 - You can explore Profile, Genre, and Director tabs freely.
 - Want to update User info? Profile tab allows you to do that.
 
-### Hosted Version
-link: [Movie-Mikes](https://moviemikes.netlify.app/login)
+# [Movie Mikes](https://moviemikes.netlify.app/login) Live Demo
+
 
 ## Hosting yourself
 - Download the Clint-side or Clone it from [Github](https://github.com/vppelli/movie_client)
@@ -37,7 +39,6 @@ link: [Movie-Mikes](https://moviemikes.netlify.app/login)
 - react-dom
 - react-router
 - react-router-dom
-
 - @parcel/transformer-sass (dev)
 - parcel (dev)
 - process (dev)
