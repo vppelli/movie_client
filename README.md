@@ -7,6 +7,7 @@ This web application provides users with access to information about different m
 ## Objective
 Using React, build the client-side for the app called MovieMike's based on its existing server-side code (Movie API and database).
 
+# [Movie Mikes](https://moviemikes.netlify.app/login) Live Demo
 
 ## Using MovieMike's
 - Must login or create account.
@@ -16,9 +17,6 @@ Using React, build the client-side for the app called MovieMike's based on its e
 - You can Search by Name.
 - You can explore Profile, Genre, and Director tabs freely.
 - Want to update User info? Profile tab allows you to do that.
-
-# [Movie Mikes](https://moviemikes.netlify.app/login) Live Demo
-
 
 ## Hosting yourself
 - Download the Clint-side or Clone it from [Github](https://github.com/vppelli/movie_client)
