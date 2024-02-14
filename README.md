@@ -1,4 +1,5 @@
-[![MovieClient](https://github.com/vppelli/Vppelli/blob/main/img/MOVEMIKE’S.png)](https://moviemikes.netlify.app/login)
+[<picture><source media="(prefers-color-scheme: dark)" srcset="https://github.com/vppelli/Vppelli/blob/main/img/MOVEMIKE’S.png"><source media="(prefers-color-scheme: light)" srcset="https://github.com/vppelli/Vppelli/blob/main/img/LMOVEMIKE’S.png"><img alt="Movie Mike's link" src="https://github.com/vppelli/Vppelli/blob/main/img/MOVEMIKE’S.png">
+</picture>](https://moviemikes.netlify.app/login)
 
 [![Movie API][API-shield]][API-url]
 
@@ -10,13 +11,13 @@ Using React, build the client-side for the app called MovieMike's based on its e
 # [Movie Mikes](https://moviemikes.netlify.app/login) Live Demo
 
 ## Using MovieMike's
-- Must login or create account.
-- Once logged-in, list of Movies will show.
+- Must log in or create an account.
+- Once logged in, a list of Movies will show.
  ( 11 movies total )
-- You can Filter by genre.
+- You can filter by genre.
 - You can Search by Name.
 - You can explore Profile, Genre, and Director tabs freely.
-- Want to update User info? Profile tab allows you to do that.
+- Want to update User info? The profile tab allows you to do that.
 
 ## Hosting yourself
 - Download the Clint-side or Clone it from [Github](https://github.com/vppelli/movie_client)
