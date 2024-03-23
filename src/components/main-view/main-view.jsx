@@ -26,7 +26,7 @@ export const MainView = () => {
 
     useEffect(() => {
         if (!token) {
-        return;
+            return;
         }
 
         const fetchGenres = async () => {
@@ -52,46 +52,38 @@ export const MainView = () => {
         };
 
         Promise.all([fetchGenres(), fetchDirectors()])
-        .then(([genresFromApi, directorsFromApi]) => {
-            setGenres(genresFromApi);
-            setDirectors(directorsFromApi);
+            .then(([genresFromApi, directorsFromApi]) => {
+                setGenres(genresFromApi);
+                setDirectors(directorsFromApi);
 
-            return fetch("https://movie-mikes-7b54f5710543.herokuapp.com/movies", { headers: { Authorization: `Bearer ${token}` } });
-        })
-        .then(response => response.json())
-        .then(data => {
-            const moviesFromApi = data.map((movie) => {
-                movie.genre = movie.Genre.map(genreId => {
-                    const genreObj = genres.find(genre => genre.id === genreId);
-                    return genreObj ? genreObj.name : genreId;
+                return fetch("https://movie-mikes-7b54f5710543.herokuapp.com/movies", { headers: { Authorization: `Bearer ${token}` } });
+            })
+            .then(response => response.json())
+            .then(data => {
+                const moviesFromApi = data.map((movie) => {
+                    return {
+                        id: movie._id,
+                        title: movie.Title,
+                        released: movie.Released,
+                        genre: movie.Genre,
+                        director: movie.Director,
+                        image: movie.ImagePath,
+                        description: movie.Description
+                    };
                 });
-                movie.director = movie.Director.map(directorId => {
-                    const directorObj = directors.find(director => director.id === directorId);
-                    return directorObj ? directorObj.name : directorId;
-                });
-                return {
-                    id: movie._id,
-                    title: movie.Title,
-                    released: movie.Released,
-                    genre: movie.genre,
-                    director: movie.director,
-                    image: movie.ImagePath,
-                    description: movie.Description
-                };
+
+                setMovies(moviesFromApi);
+            })
+            .catch(error => {
+                console.error('Error: ', error);
             });
-
-            setMovies(moviesFromApi);
-        })
-        .catch(error => {
-            console.error('Error: ', error);
-        });
     }, [token]);
 
     return (
         <BrowserRouter>
             <NavigationBar
-                user = { user }
-                onLoggedOut = {() => {
+                user={user}
+                onLoggedOut={() => {
                     setUser(null);
                     setToken(null);
                     localStorage.clear();
@@ -101,30 +93,30 @@ export const MainView = () => {
                 <Routes>
                     {/* Return SignupView*/}
                     <Route
-                    path = "/signup"
-                    element = {
-                        <>
-                            {user? (
-                                <Navigate to = "/login" />
-                            ) : (
-                                <Col md = {5}>
-                                    <SignupView />
-                                </Col>
-                            )}
-                        </>
-                    }
-                    />
-                    {/* Return LoginView*/}
-                    <Route 
-                        path = "/login"
-                        element = {
+                        path="/signup"
+                        element={
                             <>
                                 {user ? (
-                                    <Navigate to = "/movies" />
+                                    <Navigate to="/login" />
                                 ) : (
-                                    <Col md = {5}>
-                                        <LoginView 
-                                            onLoggedIn = {(user, token) => {
+                                    <Col md={5}>
+                                        <SignupView />
+                                    </Col>
+                                )}
+                            </>
+                        }
+                    />
+                    {/* Return LoginView*/}
+                    <Route
+                        path="/login"
+                        element={
+                            <>
+                                {user ? (
+                                    <Navigate to="/movies" />
+                                ) : (
+                                    <Col md={5}>
+                                        <LoginView
+                                            onLoggedIn={(user, token) => {
                                                 setUser(user);
                                                 setToken(token);
                                             }}
@@ -135,141 +127,133 @@ export const MainView = () => {
                         }
                     />
                     {/* Return MovieView if logged in */}
-                    <Route 
-                        path = "/movies/:movieId"
-                        element = {
+                    <Route
+                        path="/movies/:movieId"
+                        element={
                             <>
                                 {!user ? (
-                                    <Navigate to = "/login" replace />
+                                    <Navigate to="/login" replace />
                                 ) : movies.length === 0 ? (
                                     <Col>There is no movie</Col>
                                 ) : (
-                                    <Col md = {12}>
-                                        <MovieView movies = { movies } user = { user } updatedUser = { updatedUser } token = { token }/>
+                                    <Col md={12}>
+                                        <MovieView movies={movies} user={user} updatedUser={updatedUser} token={token} />
                                     </Col>
                                 )}
                             </>
                         }
                     />
                     {/* Return MovieCards if logged in */}
-                    <Route 
-                    path = "/"
-                    element = {
-                        <>
-                            {!user ? (
-                                    <Navigate to = "/login" replace />
-                                ) : (
-                                    <Col>Welcome</Col>
-                                )}
-                        </>
-                    }
-                    />
-                    {/* Return MovieCards if logged in */}
-                    <Route 
-                    path = "/movies"
-                    element = {
-                        <>
-                            {!user ? (
-                                    <Navigate to = "/login" replace />
+                    <Route
+                        path="/movies"
+                        element={
+                            <>
+                                {!user ? (
+                                    <Navigate to="/login" replace />
                                 ) : movies.length === 0 ? (
                                     <Col>There is no movie</Col>
                                 ) : (
                                     <>
-                                        <Form className = "form-inline m-5 d-flex justify-content-center">
-                                            <Form.Select className = "ms-1 ms-md-3 w-25" aria-label = "Default filter genre" onChange = {(e) => setFilter(e.target.value)}>
-                                                <option value = ""> Filter by genre </option>
-                                                <option value = "Action">Action</option>
-                                                <option value = "Adventure">Adventure</option>
-                                                <option value = "Fantasy">Fantasy</option>
-                                                <option value = "Horror">Horror</option>
-                                                <option value = "Sci-fi">Sci-fi</option>
-                                                <option value = "War">War</option>
-                                                <option value = "Thriller">Thriller</option>
-                                                <option value = "Drama">Drama</option>
-                                                <option value = "Comedy">Comedy</option>
+                                        <Form className="form-inline m-5 d-flex justify-content-center">
+                                            <Form.Select className="ms-1 ms-md-3 w-25" aria-label="Default filter genre" onChange={(e) => setFilter(e.target.value)}>
+                                                <option value=""> Filter by genre </option>
+                                                <option value="Action">Action</option>
+                                                <option value="Adventure">Adventure</option>
+                                                <option value="Fantasy">Fantasy</option>
+                                                <option value="Horror">Horror</option>
+                                                <option value="Sci-fi">Sci-fi</option>
+                                                <option value="War">War</option>
+                                                <option value="Thriller">Thriller</option>
+                                                <option value="Drama">Drama</option>
+                                                <option value="Comedy">Comedy</option>
                                             </Form.Select>
                                         </Form>
                                         { movies.filter((movie) => {
-                                            return filter === ""
-                                            ? movie
-                                            : movie.genre === filter;
+                                            const genres = movie.genre.map((genre) => {
+                                                const n = genre.Name;
+                                                return n;
+                                            })
+                                            genres.filter((g) => {
+                                                return g;
+                                            })
+                                            return filter === "" ? genres : genres === filter;
                                         })
                                         .map((movie) => (
-                                            <Col md = {6} lg = {4} xl = {3} className = "mb-5" key = { movie.id }>
-                                                <MovieCard movie = { movie } user = { user } updatedUser = { updatedUser } token = { token }/>
+                                            <Col md={6} lg={4} xl={3} className="mb-5" key={movie.id}>
+                                                <MovieCard movie={movie} user={user} updatedUser={updatedUser} token={token} />
                                             </Col>
                                         ))}
                                     </>
                                 )}
-                        </>
-                    }
+                            </>
+                        }
                     />
                     {/* Return GenreView if logged in */}
                     <Route
-                    path = "/genres"
-                    element = {
-                        <>
-                            {!user ? (
-                                <Navigate to = "/login" replace />
-                            ) : (
-                                <>
-                                    {  genres.map((genre) => (
-                                        <Row key = { genre.id } className = "mb-2">
-                                            <GenreCard 
-                                            genre = { genre }
-                                            />
-                                        </Row>
-                                    ))}
-                                </>
-                            )}
-                        </>
-                    }
+                        path="/genres"
+                        element={
+                            <>
+                                {!user ? (
+                                    <Navigate to="/login" replace />
+                                ) : (
+                                    <>
+                                        {genres.map((genre) => (
+                                            <Row key={genre.id} className="mb-2">
+                                                <GenreCard
+                                                    genre={genre}
+                                                />
+                                            </Row>
+                                        ))}
+                                    </>
+                                )}
+                            </>
+                        }
                     />
                     {/* Return DirectorView if logged in */}
                     <Route
-                    path = "/directors"
-                    element = {
-                        <>
-                            {!user ? (
-                                <Navigate to = "/login" replace />
-                            ) : (
-                                <>
-                                    { directors.map((director) => (
-                                        <Col md = {4} key = { director.id } className = "mb-2">
-                                            <DirectorCard 
-                                            director = { director }
-                                            />
-                                        </Col>
-                                    ))}
-                                </>
-                            )}
-                        </>
-                    }
+                        path="/directors"
+                        element={
+                            <>
+                                {!user ? (
+                                    <Navigate to="/login" replace />
+                                ) : (
+                                    <>
+                                        {directors.map((director) => (
+                                            <Col md={4} key={director.id} className="mb-2">
+                                                <DirectorCard
+                                                    director={director}
+                                                />
+                                            </Col>
+                                        ))}
+                                    </>
+                                )}
+                            </>
+                        }
                     />
                     {/* Return ProfileView if logged in */}
                     <Route
-                    path = "/profile"
-                    element = {
-                        <>
-                            {!user ? (
-                                <Navigate to = "/login" replace />
-                            ) : (
-                                <Col>
-                                    <ProfileView 
-                                    user = { user }
-                                    movies = { movies }
-                                    token = { token }
-                                    updatedUser = { updatedUser }
-                                    logOut={() => {
-                                        setUser(null);
-                                        setMovies(null);
-                                        localStorage.clear();
-                                    }}
-                                    />
-                                </Col>
-                            )}
-                        </>
-                    }
+                        path="/profile"
+                        element={
+                            <>
+                                {!user ? (
+                                    <Navigate to="/login" replace />
+                                ) : (
+                                    <Col>
+                                        <ProfileView
+                                            user={user}
+                                            movies={movies}
+                                            token={token}
+                                            updatedUser={updatedUser}
+                                            logOut={() => {
+                                                setUser(null);
+                                                setMovies(null);
+                                                localStorage.clear();
+                                            }}
+                                        />
+                                    </Col>
+                                )}
+                            </>
+                        }
                     />
                 </Routes>
             </Row>

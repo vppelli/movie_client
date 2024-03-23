@@ -20,62 +20,62 @@ export const SignupView = () => {
         fetch("https://movie-mikes-7b54f5710543.herokuapp.com/users", {
             method: "POST",
             body: JSON.stringify(data),
-            headers: {"Content-Type": "application/json"}
+            headers: { "Content-Type": "application/json" }
         })
-        .then((response) => {
-            console.log(data)
-            if (response.ok) {
-                alert("Signup successful, Login to start");
-                window.location.reload();
-            } else {
-                alert("Signup failed");
-            }
-        })
-        .catch(error => {
-            console.error('Error: ', error);
-        });
+            .then((response) => {
+                console.log(data)
+                if (response.ok) {
+                    alert("Signup successful, Login to start");
+                    window.location.reload();
+                } else {
+                    alert("Signup failed");
+                }
+            })
+            .catch(error => {
+                console.error('Error: ', error);
+            });
     };
 
     return (
-        <Form onSubmit = { handleSubmit }>
-            <Form.Group controlId = "formUsername">
-            <Form.Label>Username:</Form.Label>
-            <Form.Control
-                type = "text"
-                value = { username }
-                onChange = {(e) => setUsername(e.target.value)}
-                required
-                minLength = "4" 
-            />
-            </Form.Group>
-            <Form.Group controlId = "formPassword">
-                <Form.Label>Password:</Form.Label>
+        <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formUsername" className = "mb-5">
                 <Form.Control
-                type = "password"
-                value = { password }
-                onChange = {(e) => setPassword(e.target.value)}
-                required
-            />
+                    placeholder="Username"
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    minLength="4"
+                />
             </Form.Group>
-            <Form.Group controlId = "formEmail">
-                <Form.Label>Email:</Form.Label>
+            <Form.Group controlId="formPassword" className = "mb-5">
                 <Form.Control
-                type = "email"
-                value = { email }
-                onChange = {(e) => setEmail(e.target.value)}
-                required
-            />
+                    placeholder="Password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
             </Form.Group>
-            <Form.Group controlId = "formBirthday">
-            <Form.Label>Password:</Form.Label>
-            <Form.Control
-                type = "date"
-                value = { birthday }
-                onChange = {(e) => setBirthday(e.target.value)}
-                required
-            />
+            <Form.Group controlId="formEmail" className = "mb-5">
+                <Form.Control
+                    placeholder="Email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
             </Form.Group>
-            <Button variant = "primary" type = "submit">
+            <Form.Group controlId="formBirthday" className = "mb-5">
+                <Form.Control
+                    placeholder="Birthday"
+                    type="date"
+                    value={birthday}
+                    onChange={(e) => setBirthday(e.target.value)}
+                    required
+                />
+            </Form.Group>
+            <Button variant="primary" type="submit">
                 Submit
             </Button>
         </Form>

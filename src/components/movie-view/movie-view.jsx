@@ -1,4 +1,5 @@
 import { useParams } from "react-router";
+import { useState } from "react";
 import { Col, Button, Row, Card } from "react-bootstrap";
 import { BookmarkPlus, BookmarkCheckFill } from "react-bootstrap-icons";
 import { Link } from "react-router-dom";
@@ -7,14 +8,25 @@ import { MovieCard } from "../movie-card/movie-card";
 export const MovieView = ({ movies, user, updatedUser, token }) => {
     const { movieId } = useParams();
     const movie = movies.find((m) => m.id === movieId);
+    
+    const genreName = movie.genre.map((g) => {
+        const name = g.Name;
+        return name;
+    });
+    const setGenreName = genreName.join(", ");
 
-    const getGenre = movie.genre;
-    const setGenre = getGenre.join(", ");
-    const getDirector = movie.director;
-    const setDirector = getDirector.join(", ");
+    const director = movie.director.map((d) => {
+        const name = d.Name;
+        return name;
+    });
+    const setDirector = director.join(", ");
 
     const similarMovies = movies.filter((m) => {
-        return m.genre === movie.genre;
+        const name = m.genre.map((g) => {
+            const n = g.Name;
+            return n;
+        });
+        return name === genreName;
     });
 
     return (
@@ -37,7 +49,7 @@ export const MovieView = ({ movies, user, updatedUser, token }) => {
                                 <span className="fs-1">{ movie.title }</span>
                             </Card.Text>
                             <Card.Text>
-                                Released { movie.released } <br></br> Genres ( { setGenre } )
+                                Released { movie.released } <br></br> Genres ( { setGenreName } )
                             </Card.Text>
                             <Card.Text>
                                     <span className="fs-2">Description</span> <br></br> { movie.description } <br></br>
