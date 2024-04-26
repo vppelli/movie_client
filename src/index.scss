@@ -1,11 +1,19 @@
 $primary: rgb(211, 171, 63);
-$body-bg: rgb(240, 251, 255);
+$body-bg: #260000;
 
 body {
     background: url(../img/backdrop.jpg);
     background-repeat: no-repeat;
     background-position: top;
-    background-size: cover;
+    background-size: 7001px 4001px;
+}
+
+.size100 {
+    width: 100%;
+}
+
+.no-margin {
+    margin: 0px;
 }
 
 @import '~bootstrap/scss/bootstrap.scss';

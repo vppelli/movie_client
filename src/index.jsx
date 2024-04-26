@@ -8,7 +8,7 @@ import "./index.scss";
 // Main component (will eventually use all the others)
 const MyFlixApplication = () => {
   return (
-    <Container>
+    <Container sm={0}>
       <MainView />
     </Container>
   );

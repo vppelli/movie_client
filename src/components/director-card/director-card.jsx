@@ -8,32 +8,32 @@ export const DirectorCard = ({ director }) => {
 
     return (
         <>
-            <Card className = "h-100">
+            <Card className="h-100 bg-light">
                 <Card.Body>
-                    <Card.Title>{ director.name }</Card.Title>
+                    <Card.Title>{director.name}</Card.Title>
                     <Card.Text>
-                        <Link className = "text-decoration-none" variant = "link" onClick = {() => setShow(true)}>Click for More</Link>
+                        <Link className="text-decoration-none" variant="link" onClick={() => setShow(true)}>Click for More</Link>
                     </Card.Text>
                 </Card.Body>
             </Card>
             <Modal
-                show = { show }
-                onHide = {() => setShow(false)}
-                dialogClassName = "modal-90w"
-                aria-labelledby = "example-custom-modal-styling-title"
+                show={show}
+                onHide={() => setShow(false)}
+                dialogClassName="modal-90w"
+                aria-labelledby="example-custom-modal-styling-title"
             >
-                <Modal.Header closeButton>
-                    <Modal.Title id = "example-custom-modal-styling-title">
-                        { director.name }
+                <Modal.Header closeButton className="bg-light">
+                    <Modal.Title id="example-custom-modal-styling-title">
+                        {director.name}
                     </Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body className="bg-light">
                     <p>
-                        <span className = "fs-5">About Me</span><br></br>{ director.bio }
+                        <span className="fs-5">About Me</span><br></br>{director.bio}
                     </p>
                     <p>
-                        Born: { director.born }<br></br>
-                        Death: { director.dead }
+                        Born: {director.born}<br></br>
+                        Death: {director.dead}
                     </p>
                 </Modal.Body>
             </Modal>

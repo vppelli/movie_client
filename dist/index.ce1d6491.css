@@ -1,5 +1,13 @@
 body {
-  background: url("backdrop.8c558ef7.jpg") top / cover no-repeat;
+  background: url("backdrop.8c558ef7.jpg") top / 7001px 4001px no-repeat;
+}
+
+.size100 {
+  width: 100%;
+}
+
+.no-margin {
+  margin: 0;
 }
 
 :root, [data-bs-theme="light"] {
@@ -77,8 +85,8 @@ body {
   --bs-body-line-height: 1.5;
   --bs-body-color: #212529;
   --bs-body-color-rgb: 33, 37, 41;
-  --bs-body-bg: #f0fbff;
-  --bs-body-bg-rgb: 240, 251, 255;
+  --bs-body-bg: #260000;
+  --bs-body-bg-rgb: 38, 0, 0;
   --bs-emphasis-color: #000;
   --bs-emphasis-color-rgb: 0, 0, 0;
   --bs-secondary-color: #212529bf;
@@ -2656,11 +2664,11 @@ textarea.form-control-lg {
 }
 
 .form-range:focus::-webkit-slider-thumb {
-  box-shadow: 0 0 0 1px #f0fbff, 0 0 0 .25rem #d3ab3f40;
+  box-shadow: 0 0 0 1px #260000, 0 0 0 .25rem #d3ab3f40;
 }
 
 .form-range:focus::-moz-range-thumb {
-  box-shadow: 0 0 0 1px #f0fbff, 0 0 0 .25rem #d3ab3f40;
+  box-shadow: 0 0 0 1px #260000, 0 0 0 .25rem #d3ab3f40;
 }
 
 .form-range::-moz-focus-outer {

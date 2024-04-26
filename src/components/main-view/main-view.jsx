@@ -99,7 +99,7 @@ export const MainView = () => {
                                 {user ? (
                                     <Navigate to="/login" />
                                 ) : (
-                                    <Col md={5}>
+                                    <Col md={0} lg={6}>
                                         <SignupView />
                                     </Col>
                                 )}
@@ -114,7 +114,7 @@ export const MainView = () => {
                                 {user ? (
                                     <Navigate to="/movies" />
                                 ) : (
-                                    <Col md={5}>
+                                    <Col md={0} lg={6} >
                                         <LoginView
                                             onLoggedIn={(user, token) => {
                                                 setUser(user);
@@ -136,7 +136,7 @@ export const MainView = () => {
                                 ) : movies.length === 0 ? (
                                     <Col>There is no movie</Col>
                                 ) : (
-                                    <Col md={12}>
+                                    <Col>
                                         <MovieView movies={movies} user={user} updatedUser={updatedUser} token={token} />
                                     </Col>
                                 )}
@@ -154,8 +154,8 @@ export const MainView = () => {
                                     <Col>There is no movie</Col>
                                 ) : (
                                     <>
-                                        <Form className="form-inline m-5 d-flex justify-content-center">
-                                            <Form.Select className="ms-1 ms-md-3 w-25" aria-label="Default filter genre" onChange={(e) => setFilter(e.target.value)}>
+                                        <Form className="form-inline mb-5 d-flex justify-content-center">
+                                            <Form.Select className="w-50 bg-light" aria-label="Default filter genre" onChange={(e) => setFilter(e.target.value)}>
                                                 <option value=""> Filter by genre </option>
                                                 <option value="Action">Action</option>
                                                 <option value="Adventure">Adventure</option>
@@ -179,7 +179,7 @@ export const MainView = () => {
                                             return filter === "" ? genres : genres === filter;
                                         })
                                         .map((movie) => (
-                                            <Col md={6} lg={4} xl={3} className="mb-5" key={movie.id}>
+                                            <Col sm={0} lg={4} xl={3} className="mb-5" key={movie.id}>
                                                 <MovieCard movie={movie} user={user} updatedUser={updatedUser} token={token} />
                                             </Col>
                                         ))}
@@ -219,7 +219,7 @@ export const MainView = () => {
                                 ) : (
                                     <>
                                         {directors.map((director) => (
-                                            <Col md={4} key={director.id} className="mb-2">
+                                            <Col sm={0} lg={6} xl={4} key={director.id} className="mb-2">
                                                 <DirectorCard
                                                     director={director}
                                                 />
