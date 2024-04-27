@@ -10,6 +10,10 @@ body {
   margin: 0;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 :root, [data-bs-theme="light"] {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;
@@ -13211,6 +13215,58 @@ textarea.form-control-lg {
 
   .d-print-none {
     display: none !important;
+  }
+}
+
+@media (width <= 576px) {
+  .container-sm, .container {
+    max-width: 540px;
+  }
+}
+
+@media (width >= 576px) and (width <= 768px) {
+  .container-md, .container {
+    max-width: 720px;
+  }
+
+  .container-sm {
+    width: 100%;
+  }
+}
+
+@media (width >= 768px) and (width <= 992px) {
+  .container-lg, .container {
+    max-width: 960px;
+  }
+
+  .container-sm, .container-md {
+    width: 100%;
+  }
+}
+
+@media (width >= 992px) and (width <= 1200px) {
+  .container-xl, .container {
+    max-width: 1140px;
+  }
+
+  .container-sm, .container-md, .container-lg {
+    width: 100%;
+  }
+}
+
+@media (width >= 1200px) and (width <= 1400px) {
+  .container-xxl, .container {
+    max-width: 1320px;
+  }
+
+  .container-sm, .container-md, .container-lg, .container-xl {
+    width: 100%;
+  }
+}
+
+@media (width >= 576px) and (width <= 768px) {
+  .container-fluid, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl, .container-xxl .container {
+    width: 100%;
   }
 }
 

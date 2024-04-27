@@ -42,7 +42,7 @@ export const LoginView = ({ onLoggedIn }) => {
 
   return (
     <Col className="bg-light rounded-2 p-5">
-      <Col className="px-5 text-center"><h2>LOGIN</h2></Col>
+      <Col className="px-5 text-center"><h2>Sign In</h2></Col>
       <Form onSubmit={handleSubmit} className="p-5">
         <Form.Group controlId="formUsername" className="mb-5">
           <Form.Control

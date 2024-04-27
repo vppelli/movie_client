@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { BookmarkPlus, BookmarkCheckFill } from "react-bootstrap-icons";
 
 export const MovieCard = ({ movie, user, updatedUser, token }) => {
+    // Used to show if movie is favorited
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {
@@ -13,59 +14,15 @@ export const MovieCard = ({ movie, user, updatedUser, token }) => {
         }
     }, [user]);
 
-    const addFavorite = () => {
-        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movie.id}`, { method: "POST", headers: { Authorization: `Bearer ${token}` } })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    alert("Failed to add");
-                }
-            })
-            .then((user) => {
-                if (user) {
-                    alert("Movie added to Favorites");
-                    localStorage.setItem("user", JSON.stringify(user));
-                    updatedUser(user);
-                    setIsFavorite(true);
-                }
-            })
-            .catch(error => {
-                console.error("Failed: ", error);
-            });
-    };
-
-    const removeFavorite = () => {
-        fetch(`https://movie-mikes-7b54f5710543.herokuapp.com/users/${user.Username}/movies/${movie.id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    alert("Failed to add");
-                }
-            })
-            .then((user) => {
-                if (user) {
-                    alert("Movie removed from Favorites");
-                    localStorage.setItem("user", JSON.stringify(user));
-                    updatedUser(user);
-                    setIsFavorite(false);
-                }
-            })
-            .catch(error => {
-                console.error("Failed: ", error);
-            });
-    };
-
     return (
         <Link to={`/movies/${encodeURIComponent(movie.id)}`} className="text-decoration-none">
-            <Card className="h-100 bg-light">
+            <Card className="h-100 bg-primary">
                 <Card.Img variant="top" src={movie.image} />
                 <Card.ImgOverlay>
                     {isFavorite ? (
-                        <BookmarkCheckFill size={32} color="orange" className="bottom-0 end-0" onClick={removeFavorite} />
+                        <BookmarkCheckFill size={32} color="orange" className="bottom-0 end-0" />
                     ) : (
-                        <BookmarkPlus size={32} color="orange" className="bottom-0 end-0" onClick={addFavorite} />
+                        <BookmarkPlus size={32} color="orange" className="bottom-0 end-0" />
                     )}
                 </Card.ImgOverlay>
                 <Card.Body>
@@ -79,6 +36,8 @@ export const MovieCard = ({ movie, user, updatedUser, token }) => {
 
 MovieCard.propTypes = {
     movie: PropTypes.shape({
-        title: PropTypes.string
+        title: PropTypes.string,
+        image: PropTypes.string,
+        released: PropTypes.string,
     }).isRequired,
 };

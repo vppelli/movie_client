@@ -11,14 +11,25 @@ import { NavigationBar } from "../navigation-bar/navigation-bar";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 export const MainView = () => {
+    // Stores user data to the localstorage
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const storedToken = localStorage.getItem("token");
+
+    // Stores movies and user states from the API
     const [movies, setMovies] = useState([]);
     const [user, setUser] = useState(storedUser ? storedUser : null);
+
+    // Tracks the token once a user logs in and stores it
     const [token, setToken] = useState(storedToken ? storedToken : null);
+
+    // Stores genre and director states from the API
     const [genres, setGenres] = useState([]);
     const [directors, setDirectors] = useState([]);
+
+    // Filter for genre search (Needs to be Redone!) ---
     const [filter, setFilter] = useState("");
+
+    // Updates users state
     const updatedUser = (user) => {
         setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
@@ -29,6 +40,7 @@ export const MainView = () => {
             return;
         }
 
+        // Fetches all data from the API
         const fetchGenres = async () => {
             const response = await fetch("https://movie-mikes-7b54f5710543.herokuapp.com/genres", { headers: { Authorization: `Bearer ${token}` } });
             const data = await response.json();
@@ -75,7 +87,7 @@ export const MainView = () => {
                 setMovies(moviesFromApi);
             })
             .catch(error => {
-                console.error('Error: ', error);
+                console.error('Fetch area Error: ', error);
             });
     }, [token]);
 
@@ -97,7 +109,7 @@ export const MainView = () => {
                         element={
                             <>
                                 {user ? (
-                                    <Navigate to="/login" />
+                                    <Navigate to="/" />
                                 ) : (
                                     <Col md={0} lg={6}>
                                         <SignupView />
@@ -112,7 +124,7 @@ export const MainView = () => {
                         element={
                             <>
                                 {user ? (
-                                    <Navigate to="/movies" />
+                                    <Navigate to="/" />
                                 ) : (
                                     <Col md={0} lg={6} >
                                         <LoginView
@@ -145,7 +157,7 @@ export const MainView = () => {
                     />
                     {/* Return MovieCards if logged in */}
                     <Route
-                        path="/movies"
+                        path="/"
                         element={
                             <>
                                 {!user ? (
